@@ -37,7 +37,7 @@ dotnet test   # Samples und alle Lösungen, alles grün (so prüft es auch die C
 
 | Befehl | Was passiert |
 | --- | --- |
-| `dotnet test exercises/Exercises.Start.Tests` | Alle Kern-Lektionen und „UI-Zustand als Stream“ gegen deine Startpunkte |
+| `dotnet test exercises/Exercises.Start.Tests` | Alle Kern-Lektionen und „UI-Zustand als Stream von Aktionen“ gegen deine Startpunkte |
 | `dotnet test exercises/Extras.Start.Tests` | Die Zusatzkapitel zu ReactiveUI und DynamicData gegen deine Startpunkte |
 
 ## Übungen
@@ -50,26 +50,26 @@ Die Reihenfolge folgt der Agenda des Workshops. Zeit läuft in allen Tests über
 | Push statt Pull | [`exercises/rxnet-push-pull`](exercises/rxnet-push-pull) | `RxNetPushPull` | Schreib einen Iterator mit yield return für die Zahlen eins bis zehn und ein Observable mit denselben Werten. Vergleiche, wer jeweils den nächsten Wert anstößt. |
 | Ohne Subscribe passiert nichts | [`exercises/rxnet-observable-contract`](exercises/rxnet-observable-contract) | `RxNetObservableContract` | Schreib mit Observable.Create einen Ticker, der auf einem IScheduler hochzählt, nach fünf Werten OnCompleted meldet und beim Dispose den Timer stoppt. |
 | Fast alles wird zum Observable | [`exercises/rxnet-creation`](exercises/rxnet-creation) | `RxNetCreation` | Bau mit Creation-Methoden aus einem Event, einem Timer und einem Task einen gemeinsamen Log-Stream, in dem jede Zeile ihre Quelle als Präfix trägt. |
-| Operatoren sind Extension Methods | [`exercises/rxnet-operators`](exercises/rxnet-operators) | `RxNetOperators` | Verarbeite Nachrichten zum Bestellstatus: nach Typ filtern, Duplikate mit DistinctUntilChanged weglassen und mit Scan zählen, als eigene Extension Methods. |
+| Operatoren sind Extension Methods auf IObservable | [`exercises/rxnet-operators`](exercises/rxnet-operators) | `RxNetOperators` | Verarbeite Nachrichten zum Bestellstatus: nach Typ filtern, Duplikate mit DistinctUntilChanged weglassen und mit Scan zählen, als eigene Extension Methods. |
 | Jede Subscription braucht ein Ende | [`exercises/rxnet-subscription-cleanup`](exercises/rxnet-subscription-cleanup) | `RxNetSubscriptionCleanup` | Bau eine Komponente mit drei Subscriptions auf Interval und ein Event und beende alle gemeinsam über ein CompositeDisposable und TakeUntil. |
-| Streams kombinieren | [`exercises/rxnet-combining`](exercises/rxnet-combining) | `RxNetCombining` | Löse FizzBuzz reaktiv, indem du die Zahlen eins bis hundert mit zwei zyklischen Streams für Fizz und Buzz per Zip kombinierst. |
-| Cold oder Hot | [`exercises/rxnet-cold-hot`](exercises/rxnet-cold-hot) | `RxNetColdHot` | Abonniere ein Observable aus Observable.Defer zweimal, zähle die Requests mit Do und teile die Ausführung danach mit Publish und RefCount. |
-| Tasks und Observables | [`exercises/rxnet-tasks-async`](exercises/rxnet-tasks-async) | `RxNetTasksAsync` | Bind eine async-Methode mit CancellationToken per FromAsync ein, prüf im Test, dass Dispose den Abbruch auslöst, und hol das Ergebnis mit await zurück. |
-| Flattening | [`exercises/rxnet-flattening`](exercises/rxnet-flattening) | `RxNetFlattening` | Bau Produktsuche, Autosave, Upload-Queue und Login-Button mit je einer Flattening-Strategie und begründe jede Wahl im Code-Kommentar. |
-| Fehlerbehandlung | [`exercises/rxnet-error-handling`](exercises/rxnet-error-handling) | `RxNetErrorHandling` | Lade drei URLs mit SelectMany, gib jedem Request ein Timeout, wiederhole zweimal mit Backoff und liefere bei Fehlern einen Fehlerwert statt abzubrechen. |
-| Subjects und Multicasting | [`exercises/rxnet-subjects-multicasting`](exercises/rxnet-subjects-multicasting) | `RxNetSubjectsMulticasting` | Teile eine simulierte WebSocket-Verbindung zwischen mehreren Subscribern, sodass sie nur einmal öffnet und beim letzten Dispose schließt. |
-| Zeit und Backpressure | [`exercises/rxnet-time-backpressure`](exercises/rxnet-time-backpressure) | `RxNetTimeBackpressure` | Zeig aus einem schnellen Sensor-Stream einen gedrosselten Live-Wert mit Sample und einen Durchschnitt pro Zeitfenster mit Buffer an. |
-| Zeit testen ohne zu warten | [`exercises/rxnet-testing`](exercises/rxnet-testing) | `RxNetTesting` | Schreib xUnit-Tests für die fertige Produktsuche mit TestScheduler und virtueller Zeit: Throttle, Duplikate, Abbruch und Fehlerfall. |
+| Welcher Operator kombiniert deine Streams? | [`exercises/rxnet-combining`](exercises/rxnet-combining) | `RxNetCombining` | Löse FizzBuzz reaktiv, indem du die Zahlen eins bis hundert mit zwei zyklischen Streams für Fizz und Buzz per Zip kombinierst. |
+| Cold oder Hot, wer startet den Producer? | [`exercises/rxnet-cold-hot`](exercises/rxnet-cold-hot) | `RxNetColdHot` | Abonniere ein Observable aus Observable.Defer zweimal, zähle die Requests mit Do und teile die Ausführung danach mit Publish und RefCount. |
+| Tasks und Observables arbeiten zusammen | [`exercises/rxnet-tasks-async`](exercises/rxnet-tasks-async) | `RxNetTasksAsync` | Bind eine async-Methode mit CancellationToken per FromAsync ein, prüf im Test, dass Dispose den Abbruch auslöst, und hol das Ergebnis mit await zurück. |
+| Wechseln, parallel, anstellen oder ignorieren? | [`exercises/rxnet-flattening`](exercises/rxnet-flattening) | `RxNetFlattening` | Bau Produktsuche, Autosave, Upload-Queue und Login-Button mit je einer Flattening-Strategie und begründe jede Wahl im Code-Kommentar. |
+| Ein Fehler beendet den Stream | [`exercises/rxnet-error-handling`](exercises/rxnet-error-handling) | `RxNetErrorHandling` | Lade drei URLs mit SelectMany, gib jedem Request ein Timeout, wiederhole zweimal mit Backoff und liefere bei Fehlern einen Fehlerwert statt abzubrechen. |
+| Subjects teilen Werte, Publish teilt Arbeit | [`exercises/rxnet-subjects-multicasting`](exercises/rxnet-subjects-multicasting) | `RxNetSubjectsMulticasting` | Teile eine simulierte WebSocket-Verbindung zwischen mehreren Subscribern, sodass sie nur einmal öffnet und beim letzten Dispose schließt. |
+| Was tun, wenn mehr Events kommen, als du verarbeitest? | [`exercises/rxnet-time-backpressure`](exercises/rxnet-time-backpressure) | `RxNetTimeBackpressure` | Zeig aus einem schnellen Sensor-Stream einen gedrosselten Live-Wert mit Sample und einen Durchschnitt pro Zeitfenster mit Buffer an. |
+| Zeit testen, ohne zu warten | [`exercises/rxnet-testing`](exercises/rxnet-testing) | `RxNetTesting` | Schreib xUnit-Tests für die fertige Produktsuche mit TestScheduler und virtueller Zeit: Throttle, Duplikate, Abbruch und Fehlerfall. |
 
 ### Zusatzkapitel
 
 | Lektion | Ordner | Filter | Aufgabe |
 | --- | --- | --- | --- |
-| UI-Zustand als Stream | [`exercises/rxnet-ui-state`](exercises/rxnet-ui-state) | `RxNetUiState` | Bau ein ViewModel mit Aktionen als Stream, führe den Zustand mit Scan über reine Reducer und halte die letzten fünf Suchen als LRU-Liste. |
-| Ausblick ReactiveUI | [`exercises/rxnet-reactiveui`](exercises/rxnet-reactiveui) | `RxNetReactiveUi` | Bau das Warenkorb-ViewModel mit ReactiveObject, WhenAnyValue, ObservableAsPropertyHelper und einem ReactiveCommand und teste es ohne UI. |
-| Ausblick DynamicData | [`exercises/rxnet-dynamicdata`](exercises/rxnet-dynamicdata) | `RxNetDynamicData` | Halte die Produkte in einem SourceCache, filtere sie live nach Suchbegriff, sortiere nach Preis und binde das Ergebnis an eine ReadOnlyObservableCollection. |
+| UI-Zustand als Stream von Aktionen | [`exercises/rxnet-ui-state`](exercises/rxnet-ui-state) | `RxNetUiState` | Bau ein ViewModel mit Aktionen als Stream, führe den Zustand mit Scan über reine Reducer und halte die letzten fünf Suchen als LRU-Liste. |
+| Was nimmt dir ReactiveUI im ViewModel ab? | [`exercises/rxnet-reactiveui`](exercises/rxnet-reactiveui) | `RxNetReactiveUi` | Bau das Warenkorb-ViewModel mit ReactiveObject, WhenAnyValue, ObservableAsPropertyHelper und einem ReactiveCommand und teste es ohne UI. |
+| Wie bleiben große Listen reaktiv und schnell? | [`exercises/rxnet-dynamicdata`](exercises/rxnet-dynamicdata) | `RxNetDynamicData` | Halte die Produkte in einem SourceCache, filtere sie live nach Suchbegriff, sortiere nach Preis und binde das Ergebnis an eine ReadOnlyObservableCollection. |
 
-„UI-Zustand als Stream“ braucht keine weiteren Pakete und läuft deshalb mit den Kern-Lektionen. ReactiveUI und DynamicData stehen in eigenen Projekten, die Begründung steht unter [Pakete](#pakete).
+„UI-Zustand als Stream von Aktionen“ braucht keine weiteren Pakete und läuft deshalb mit den Kern-Lektionen. ReactiveUI und DynamicData stehen in eigenen Projekten, die Begründung steht unter [Pakete](#pakete).
 
 ## Aufbau der Übungen
 
