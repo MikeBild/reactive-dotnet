@@ -1,4 +1,12 @@
 <Solution>
+  <Folder Name="/exercises/">
+    <Project Path="exercises/Exercises.Start/Exercises.Start.csproj" />
+    <Project Path="exercises/Exercises.Solution/Exercises.Solution.csproj" />
+    <Project Path="exercises/Exercises.Solution.Tests/Exercises.Solution.Tests.csproj" />
+    <Project Path="exercises/Extras.Start/Extras.Start.csproj" />
+    <Project Path="exercises/Extras.Solution/Extras.Solution.csproj" />
+    <Project Path="exercises/Extras.Solution.Tests/Extras.Solution.Tests.csproj" />
+  </Folder>
   <Folder Name="/samples/">
     <Project Path="samples/ReactiveSamples.Cli/ReactiveSamples.Cli.csproj" />
   </Folder>
