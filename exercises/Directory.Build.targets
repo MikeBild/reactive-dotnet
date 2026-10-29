@@ -2,7 +2,7 @@
   <!--
     Jedes Projekt setzt drei Eigenschaften:
       ExerciseSet:     Core (Kern-Lektionen) oder Extras (ReactiveUI und DynamicData)
-      ExerciseVariant: Start (deine Lösung) oder Solution (Musterlösung)
+      ExerciseVariant: Start (Startpunkt, den du füllst) oder Solution (Lösung)
       ExerciseKind:    Library oder Tests
   -->
   <PropertyGroup>
