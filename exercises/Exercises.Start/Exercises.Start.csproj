@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Bindet die Dateien aus den Lektionsordnern ein, siehe ../Directory.Build.targets -->
+  <PropertyGroup>
+    <ExerciseSet>Core</ExerciseSet>
+    <ExerciseVariant>Start</ExerciseVariant>
+    <ExerciseKind>Library</ExerciseKind>
+  </PropertyGroup>
+</Project>

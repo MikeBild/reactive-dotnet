@@ -1,0 +1,20 @@
+<Project>
+  <!-- Root-Einstellungen übernehmen: net10.0, Nullable, TreatWarningsAsErrors -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <!--
+    Jede Lektion liegt in exercises/<lektion>/:
+      *.cs              Startpunkt mit TODOs
+      solution/*.cs     Lösung
+      support/*.cs      Hilfsdateien, die du nicht ändern musst
+      *Tests.cs         Tests, dieselben für Startpunkt und Lösung
+    Die Projekte in exercises/ binden diese Dateien nur ein (siehe Directory.Build.targets).
+  -->
+  <PropertyGroup>
+    <ExercisesDir>$(MSBuildThisFileDirectory)</ExercisesDir>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Exercises</RootNamespace>
+    <SystemReactiveVersion>7.0.0</SystemReactiveVersion>
+  </PropertyGroup>
+</Project>
