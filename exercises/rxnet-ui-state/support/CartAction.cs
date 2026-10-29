@@ -1,6 +1,6 @@
 namespace Exercises.RxNetUiState;
 
-/// <summary>Jede Nutzeraktion im Warenkorb ist ein Wert.</summary>
+/// <summary>Jede Aktion der Nutzenden im Warenkorb ist ein Wert.</summary>
 public abstract record CartAction;
 
 public sealed record AddItem(CartItem Item) : CartAction;
