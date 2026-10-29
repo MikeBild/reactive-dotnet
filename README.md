@@ -183,3 +183,7 @@ Fallstricke beim Umstieg:
 
 - Workshop: [„Reactive Programming mit Rx.NET“](https://workshops.mikebild.dev/w/reactive-programming-dotnet/remote/)
 - Folien: [slides.mikebild.dev/introduction-reactive-programming.html](https://slides.mikebild.dev/introduction-reactive-programming.html)
+
+## Lizenz
+
+[MIT](LICENSE)
