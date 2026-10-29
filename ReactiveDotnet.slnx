@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/ReactiveSamples.Cli/ReactiveSamples.Cli.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/ReactiveSamples/ReactiveSamples.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ReactiveSamples.Tests/ReactiveSamples.Tests.csproj" />
+  </Folder>
+</Solution>
