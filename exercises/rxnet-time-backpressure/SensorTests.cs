@@ -28,7 +28,7 @@ public class SensorTests : ReactiveTest
         scheduler.AdvanceBy(3 * Second.Ticks);
 
         Assert.Equal(3, values.Count); // statt dreitausend Werten
-        Assert.True(values[0] >= 990, $"Erwartet war ein Wert vom Ende des Fensters, nicht {values[0]}.");
+        Assert.True(values[0] >= 990, $"Erwartet war ein Wert vom Ende des Fensters, nicht {values[0]}. Sample liefert pro Fenster den neuesten Wert.");
         Assert.True(values[1] > values[0] && values[2] > values[1]);
     }
 

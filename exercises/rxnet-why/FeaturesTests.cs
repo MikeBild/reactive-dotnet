@@ -11,7 +11,7 @@ public class FeaturesTests
 
     [Fact]
     public void Du_hast_mindestens_drei_Features_notiert() =>
-        Assert.True(Features.All.Count >= 3, $"Erst {Features.All.Count} Features notiert.");
+        Assert.True(Features.All.Count >= 3, $"Erst {Features.All.Count} von 3 Features notiert. Trag die übrigen in Features.All ein.");
 
     [Fact]
     public void Jedes_Feature_hat_Namen_Bedarf_und_Begruendung()
@@ -21,7 +21,7 @@ public class FeaturesTests
         {
             Assert.False(string.IsNullOrWhiteSpace(feature.Name));
             Assert.NotEmpty(feature.Needs);
-            Assert.True(feature.Why.Trim().Length > 10, $"Begründung für „{feature.Name}“ ist zu kurz.");
+            Assert.True(feature.Why.Trim().Length > 10, $"Begründung für „{feature.Name}“ ist zu kurz. Schreib in einem Satz, warum es ein Stream ist.");
         });
     }
 }
