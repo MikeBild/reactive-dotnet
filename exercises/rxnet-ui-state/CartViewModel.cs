@@ -1,4 +1,4 @@
-// Lektion rxnet-ui-state: UI-Zustand als Stream von Aktionen
+// Lektion rxnet-ui-state: UI State als Stream von Actions
 //
 // Aufgabe: Bau ein ViewModel mit Aktionen als Stream, führe den Zustand mit Scan über
 // reine Reducer und halte die letzten fünf Suchen als LRU-Liste.

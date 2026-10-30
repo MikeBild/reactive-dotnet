@@ -37,7 +37,7 @@ dotnet test   # Samples und alle Lösungen, alles grün (so prüft es auch die C
 
 | Befehl | Was passiert |
 | --- | --- |
-| `dotnet test exercises/Exercises.Start.Tests` | Alle Kern-Lektionen und „UI-Zustand als Stream von Aktionen“ gegen deine Startpunkte |
+| `dotnet test exercises/Exercises.Start.Tests` | Alle Kern-Lektionen und „UI State als Stream von Actions“ gegen deine Startpunkte |
 | `dotnet test exercises/Extras.Start.Tests` | Die Zusatzkapitel zu ReactiveUI und DynamicData gegen deine Startpunkte |
 
 ## Übungen
@@ -65,11 +65,11 @@ Die Reihenfolge folgt der Agenda des Workshops. Zeit läuft in allen Tests über
 
 | Lektion | Ordner | Filter | Aufgabe |
 | --- | --- | --- | --- |
-| UI-Zustand als Stream von Aktionen | [`exercises/rxnet-ui-state`](exercises/rxnet-ui-state) | `RxNetUiState` | Bau ein ViewModel mit Aktionen als Stream, führe den Zustand mit Scan über reine Reducer und halte die letzten fünf Suchen als LRU-Liste. |
+| UI State als Stream von Actions | [`exercises/rxnet-ui-state`](exercises/rxnet-ui-state) | `RxNetUiState` | Bau ein ViewModel mit Aktionen als Stream, führe den Zustand mit Scan über reine Reducer und halte die letzten fünf Suchen als LRU-Liste. |
 | Was nimmt dir ReactiveUI im ViewModel ab? | [`exercises/rxnet-reactiveui`](exercises/rxnet-reactiveui) | `RxNetReactiveUi` | Bau das Warenkorb-ViewModel mit ReactiveObject, WhenAnyValue, ObservableAsPropertyHelper und einem ReactiveCommand und teste es ohne UI. |
 | Wie bleiben große Listen reaktiv und schnell? | [`exercises/rxnet-dynamicdata`](exercises/rxnet-dynamicdata) | `RxNetDynamicData` | Halte die Produkte in einem SourceCache, filtere sie live nach Suchbegriff, sortiere nach Preis und binde das Ergebnis an eine ReadOnlyObservableCollection. |
 
-„UI-Zustand als Stream von Aktionen“ braucht keine weiteren Pakete und läuft deshalb mit den Kern-Lektionen. ReactiveUI und DynamicData stehen in eigenen Projekten, die Begründung steht unter [Pakete](#pakete).
+„UI State als Stream von Actions“ braucht keine weiteren Pakete und läuft deshalb mit den Kern-Lektionen. ReactiveUI und DynamicData stehen in eigenen Projekten, die Begründung steht unter [Pakete](#pakete).
 
 ## Aufbau der Übungen
 
