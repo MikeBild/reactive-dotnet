@@ -4,7 +4,7 @@ namespace ReactiveSamples.CombineLatest;
 
 /// <summary>
 /// Modernisierung von Rx_Subject_Example: CombineLatest zweier Quellen.
-/// Früher wurden zwei Subjects von Hand befeuert. Heute ist der Operator eine reine Funktion
+/// Früher wurden zwei Subjects von Hand befeuert. Heute ist der Operator eine Pure Function
 /// über zwei IObservable – woher die Werte kommen (Event, Timer, TestScheduler), ist egal.
 /// Ergebnis als ValueTuple statt Tuple&lt;int,string&gt;.
 /// </summary>

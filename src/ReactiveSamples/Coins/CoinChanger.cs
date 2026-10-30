@@ -5,7 +5,7 @@ namespace ReactiveSamples.Coins;
 
 /// <summary>
 /// Modernisierung der Gists "Coin Changer with LINQ" und "... without shared state" (2013).
-/// Original 1: <c>select new { ..., Spare = (amount %= n) }</c> – Seiteneffekt in der Query,
+/// Original 1: <c>select new { ..., Spare = (amount %= n) }</c> – Side Effect in der Query,
 ///   Ergebnis hängt von Auswertungsreihenfolge und Mehrfach-Enumeration ab.
 /// Original 2: Dictionary&lt;string,int&gt; als Akkumulator ("Data hack").
 /// Heute: record als unveränderlicher Zustand + Aggregate/Scan. Weil IEnumerable und IObservable
