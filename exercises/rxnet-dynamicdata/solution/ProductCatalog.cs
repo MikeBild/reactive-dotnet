@@ -6,8 +6,8 @@ namespace Exercises.RxNetDynamicData;
 
 public sealed class ProductCatalog : IDisposable
 {
-    // SourceCache hält die Produkte nach Id. Jede Änderung wird als ChangeSet verschickt,
-    // also nur Add, Update oder Remove der betroffenen Einträge statt der ganzen Liste.
+    // SourceCache keeps the products by Id. Every change is sent as a ChangeSet,
+    // so only Add, Update, or Remove of the affected entries instead of the whole list.
     private readonly SourceCache<Product, string> _products = new(product => product.Id);
     private readonly BehaviorSubject<string> _term = new("");
     private readonly ReadOnlyObservableCollection<Product> _visible;
@@ -15,19 +15,19 @@ public sealed class ProductCatalog : IDisposable
 
     public ProductCatalog()
     {
-        // Der Filter ist selbst ein Stream: Ein neuer Suchbegriff filtert den Bestand neu.
+        // The filter is itself a stream: A new search term filters the existing items again.
         var matches = _term.Select(term => (Func<Product, bool>)(product =>
             product.Name.Contains(term, StringComparison.OrdinalIgnoreCase)));
 
         _subscription = _products
             .Connect()
             .Filter(matches)
-            // SortAndBind sortiert und schreibt die ChangeSets in die Collection für die UI-Bindung.
+            // SortAndBind sorts and writes the ChangeSets into the collection for UI binding.
             .SortAndBind(out _visible, SortExpressionComparer<Product>.Ascending(product => product.PriceCents))
             .Subscribe();
     }
 
-    /// <summary>Die gefilterte, nach Preis sortierte Sicht. Die View bindet nur an diese Collection.</summary>
+    /// <summary>The filtered view, sorted by price. The UI view binds only to this collection.</summary>
     public ReadOnlyObservableCollection<Product> Visible => _visible;
 
     public void Upsert(params Product[] products) => _products.AddOrUpdate(products);

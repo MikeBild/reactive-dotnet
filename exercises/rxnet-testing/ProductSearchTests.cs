@@ -1,21 +1,21 @@
-// Lektion rxnet-testing: Zeit testen ohne zu warten
+// Lesson rxnet-testing: Test time without waiting
 //
-// Aufgabe: Schreib xUnit-Tests für die fertige Produktsuche mit TestScheduler und
-// virtueller Zeit: Throttle, Duplikate, Abbruch und Fehlerfall.
+// Task: Write xUnit tests for the finished product search with TestScheduler and
+// virtual time: Throttle, duplicates, cancellation, and the error case.
 //
-// Die Suche steht in support/ProductSearch.cs. Hier ist der Test selbst die Aufgabe:
-// Der erste Test zeigt das Muster, die übrigen sind übersprungen. Entferne jeweils
-// Skip, schreib den Test und lass ihn laufen:
+// The search is in support/ProductSearch.cs. Here, the test itself is the task:
+// The first test shows the pattern, the others are skipped. For each one, remove
+// Skip, write the test, and run it:
 //
 //   dotnet test exercises/Exercises.Start.Tests --filter "FullyQualifiedName~RxNetTesting"
 //
-// Merkhilfe für den TestScheduler:
-//  - Ein Tick sind 100 Nanosekunden, eine Millisekunde sind 10.000 Ticks (Ms unten).
-//  - CreateHotObservable(OnNext(zeit, wert), …) läuft unabhängig vom Subscribe (absolute Zeit).
-//  - CreateColdObservable(OnNext(zeit, wert), …) startet pro Subscribe neu (relative Zeit).
-//  - Start(create, created, subscribed, disposed) gibt einen Observer mit Messages zurück.
-//    Ohne Angaben abonniert Start bei Tick 200 und kündigt bei Tick 1000, also nach 0,1 ms.
-//    Gib deshalb immer explizite Zeiten an.
+// Cheat sheet for the TestScheduler:
+//  - One tick is 100 nanoseconds, one millisecond is 10,000 ticks (Ms below).
+//  - CreateHotObservable(OnNext(time, value), …) runs independently of Subscribe (absolute time).
+//  - CreateColdObservable(OnNext(time, value), …) starts anew for each Subscribe (relative time).
+//  - Start(create, created, subscribed, disposed) returns an Observer with Messages.
+//    Without arguments, Start subscribes at tick 200 and disposes at tick 1000, so after 0.1 ms.
+//    So always pass explicit times.
 
 namespace Exercises.RxNetTesting;
 
@@ -40,31 +40,31 @@ public class ProductSearchTests : ReactiveTest
             observer.Messages);
     }
 
-    [Fact(Skip = "TODO: Throttle testen")]
+    [Fact(Skip = "TODO: test Throttle")]
     public void Die_Suche_wartet_300_ms_Ruhe_ab_und_sucht_nur_den_letzten_Begriff()
     {
-        // TODO: Hot Observable mit "B" bei 10 ms und "Brems" bei 20 ms,
-        //       search als Cold Observable, das nach 1 ms ["Bremsscheibe"] liefert.
-        //       Erwartung: genau eine Suche nach "Brems", Ergebnis bei 321 ms.
+        // TODO: Hot Observable with "B" at 10 ms and "Brems" at 20 ms,
+        //       search as a Cold Observable that returns ["Bremsscheibe"] after 1 ms.
+        //       Expected: exactly one search for "Brems", result at 321 ms.
     }
 
-    [Fact(Skip = "TODO: Duplikate testen")]
+    [Fact(Skip = "TODO: test duplicates")]
     public void Derselbe_Begriff_zweimal_hintereinander_loest_keine_zweite_Suche_aus()
     {
-        // TODO: "Kerze" bei 10 ms und noch einmal bei 500 ms, Suchen zählen.
+        // TODO: "Kerze" at 10 ms and once more at 500 ms, count the searches.
     }
 
-    [Fact(Skip = "TODO: Abbruch testen")]
+    [Fact(Skip = "TODO: test cancellation")]
     public void Ein_neuer_Begriff_bricht_die_laufende_Suche_ab()
     {
-        // TODO: "Brems" mit langsamer Suche (500 ms), "Zünd" 400 ms später mit schneller Suche.
-        //       Prüf mit slow.Subscriptions, dass die langsame Suche abgemeldet wurde.
+        // TODO: "Brems" with a slow search (500 ms), "Zünd" 400 ms later with a fast search.
+        //       Check with slow.Subscriptions that the slow search was unsubscribed.
     }
 
-    [Fact(Skip = "TODO: Fehlerfall testen")]
+    [Fact(Skip = "TODO: test the error case")]
     public void Ein_Fehler_der_Suche_wird_zum_Fehlerzustand_und_die_naechste_Suche_laeuft()
     {
-        // TODO: Die Suche nach "kaputt" meldet OnError, die nach "Kerze" liefert ein Ergebnis.
-        //       Erwartung: zuerst SearchFailed, danach SearchOk.
+        // TODO: The search for "kaputt" signals OnError, the one for "Kerze" returns a result.
+        //       Expected: first SearchFailed, then SearchOk.
     }
 }

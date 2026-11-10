@@ -1,5 +1,5 @@
-// Beispiellösung für rxnet-why. Deine Features sehen anders aus.
-// Wichtig ist nur, dass du für jedes begründen kannst, warum es ein Stream ist.
+// Example solution for rxnet-why. Your features will look different.
+// All that matters is that you can explain for each one why it is a stream.
 
 namespace Exercises.RxNetWhy;
 

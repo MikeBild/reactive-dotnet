@@ -6,16 +6,16 @@ using System.Reactive.Threading.Tasks;
 namespace ReactiveSamples.ChannelAffinity;
 
 /// <summary>
-/// Modernisierung von Gist "last one close the door" (RxScheduling, 2013):
-/// Kommandos werden pro Kanal gruppiert (GroupBy); jeder Kanal läuft auf einem eigenen
-/// EventLoopScheduler (= ein dedizierter Thread), d. h. pro Kanal sequenziell, kanalübergreifend parallel.
+/// Modernization of gist "last one close the door" (RxScheduling, 2013):
+/// Commands are grouped per channel (GroupBy); each channel runs on its own
+/// EventLoopScheduler (= a dedicated thread), i.e. sequential per channel, parallel across channels.
 ///
-/// Probleme des Originals und was hier anders ist:
-/// - Busy-Wait auf einem nicht threadsicheren Zähler + Environment.Exit in Dispose
-///   → das Ende wird über OnCompleted signalisiert und mit await (ToTask) abgewartet, inkl. Timeout.
-/// - Pro Gruppe ein neuer EventLoopScheduler, der nie entsorgt wurde (Thread-Leck)
-///   → Scheduler wird beim Abschluss der Gruppe disposed.
-/// - Mutable Klassen Command/Channel mit handgeschriebenem Equals → records.
+/// Problems of the original and what is different here:
+/// - Busy wait on a non-thread-safe counter + Environment.Exit in Dispose
+///   → the end is signaled through OnCompleted and awaited with await (ToTask), including a timeout.
+/// - A new EventLoopScheduler per group that was never disposed (thread leak)
+///   → the scheduler is disposed when the group completes.
+/// - Mutable classes Command/Channel with hand-written Equals → records.
 /// </summary>
 public sealed record Channel(int Id)
 {
@@ -29,8 +29,8 @@ public sealed record Processed(Command Command, int ThreadId);
 public static class ChannelProcessor
 {
     /// <summary>
-    /// Verarbeitet alle Kommandos; das Ergebnis-Observable endet, wenn die Quelle endet
-    /// und jeder Kanal seine Warteschlange abgearbeitet hat ("drain").
+    /// Processes all commands; the result Observable ends when the source ends
+    /// and each channel has worked through its queue ("drain").
     /// </summary>
     public static IObservable<Processed> Process(IObservable<Command> commands, Action<Command> handler) =>
         commands
@@ -45,7 +45,7 @@ public static class ChannelProcessor
                         return new Processed(command, Environment.CurrentManagedThreadId);
                     })));
 
-    /// <summary>Graceful Shutdown: auf das Ende warten, aber höchstens <paramref name="timeout"/>.</summary>
+    /// <summary>Graceful shutdown: wait for the end, but at most <paramref name="timeout"/>.</summary>
     public static async Task<IReadOnlyList<Processed>> DrainAsync(
         IObservable<Command> commands, Action<Command> handler, TimeSpan timeout, CancellationToken cancellationToken = default)
     {
@@ -56,14 +56,14 @@ public static class ChannelProcessor
         return result.AsReadOnly();
     }
 
-    /// <summary>Hilfsfunktion für Tests/Demo: welcher Kanal lief auf welchen Threads?</summary>
+    /// <summary>Helper for tests/demo: which channel ran on which threads?</summary>
     public static IReadOnlyDictionary<Channel, IReadOnlySet<int>> ThreadsPerChannel(IEnumerable<Processed> processed) =>
         processed
             .GroupBy(p => p.Command.Channel)
             .ToDictionary(g => g.Key, g => (IReadOnlySet<int>)g.Select(p => p.ThreadId).ToHashSet());
 }
 
-/// <summary>Kleiner Helfer, um gleichzeitige Ausführung pro Kanal zu erkennen (darf nie passieren).</summary>
+/// <summary>Small helper to detect concurrent execution per channel (must never happen).</summary>
 public sealed class ConcurrencyProbe
 {
     private readonly ConcurrentDictionary<Channel, int> _active = new();

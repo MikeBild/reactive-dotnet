@@ -3,7 +3,7 @@ using ReactiveSamples.ChannelAffinity;
 
 namespace ReactiveSamples.Tests;
 
-/// <summary>Echte Threads (EventLoopScheduler) – hier wird bewusst nicht virtualisiert.</summary>
+/// <summary>Real threads (EventLoopScheduler) – deliberately not virtualized here.</summary>
 public class ChannelAffinityTests
 {
     private static IObservable<Command> Commands(int channels, int perChannel, TimeSpan work) =>

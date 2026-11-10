@@ -7,8 +7,8 @@ public sealed class OrderView : IDisposable
 
     public OrderView(AppWindow window, IScheduler scheduler, Action<string> render)
     {
-        // TakeUntil steht jeweils zuletzt, damit es alles davor beendet.
-        // Finally läuft bei OnCompleted, OnError und Dispose, also bei jedem Ende.
+        // TakeUntil always comes last so it ends everything before it.
+        // Finally runs on OnCompleted, OnError, and Dispose, so on every kind of end.
         _subscriptions.Add(Observable
             .Interval(TimeSpan.FromSeconds(1), scheduler)
             .Select(n => $"tick {n}")
@@ -33,8 +33,8 @@ public sealed class OrderView : IDisposable
 
     public void Dispose()
     {
-        // Das Signal beendet alle Streams sauber mit OnCompleted.
-        // Das CompositeDisposable ist das Sicherheitsnetz für alles, was kein TakeUntil hat.
+        // The signal ends all streams cleanly with OnCompleted.
+        // The CompositeDisposable is the safety net for everything without TakeUntil.
         _destroy.OnNext(Unit.Default);
         _destroy.OnCompleted();
         _subscriptions.Dispose();

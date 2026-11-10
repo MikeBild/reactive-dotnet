@@ -15,7 +15,7 @@ public class OrderViewTests
         scheduler.AdvanceBy(5 * Second);
         window.Resize();
 
-        // Bei Sekunde fünf fallen tick 4 und autosave 0 zusammen, die Reihenfolge dazwischen ist offen.
+        // At second five, tick 4 and autosave 0 coincide, their relative order is not defined.
         Assert.Equal(["autosave 0", "resize", "tick 0", "tick 1", "tick 2", "tick 3", "tick 4"], lines.Order());
         Assert.Equal("resize", lines[^1]);
     }

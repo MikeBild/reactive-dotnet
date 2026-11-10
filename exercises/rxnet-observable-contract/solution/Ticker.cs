@@ -2,11 +2,11 @@ namespace Exercises.RxNetObservableContract;
 
 public static class Ticker
 {
-    /// <summary>Zählt ab 0 im Takt von period hoch und meldet nach count Werten OnCompleted.</summary>
+    /// <summary>Counts up from 0 every period and signals OnCompleted after count values.</summary>
     public static IObservable<int> Create(TimeSpan period, IScheduler scheduler, int count = 5) =>
         Observable.Create<int>(observer =>
         {
-            // Der Producer startet erst hier, also bei jedem Subscribe neu.
+            // The producer only starts here, so anew on every Subscribe.
             var value = 0;
             var timer = new SerialDisposable();
             timer.Disposable = scheduler.SchedulePeriodic(period, () =>
@@ -15,11 +15,11 @@ public static class Ticker
                 if (value == count)
                 {
                     observer.OnCompleted();
-                    timer.Dispose(); // nach OnCompleted läuft kein Timer mehr
+                    timer.Dispose(); // no timer runs after OnCompleted
                 }
             });
 
-            // Das Teardown: Dispose der Subscription stoppt den Timer.
+            // The teardown: Disposing the Subscription stops the timer.
             return timer;
         });
 }

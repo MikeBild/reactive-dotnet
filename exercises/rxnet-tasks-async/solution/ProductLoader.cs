@@ -2,23 +2,23 @@ namespace Exercises.RxNetTasksAsync;
 
 public static class ProductLoader
 {
-    /// <summary>Startet load erst beim Subscribe. Dispose bricht das CancellationToken ab.</summary>
+    /// <summary>Starts load only on Subscribe. Dispose cancels the CancellationToken.</summary>
     public static IObservable<Product> Load(Func<CancellationToken, Task<Product>> load) =>
-        // Die Überladung mit CancellationToken macht den Task lazy und abbrechbar:
-        // Subscribe startet ihn, Dispose löst das Token aus. Ein fertiger Task hätte beides nicht.
+        // The overload with CancellationToken makes the task lazy and cancelable:
+        // Subscribe starts it, Dispose triggers the token. A task that is already running would have neither.
         Observable.FromAsync(load);
 
-    /// <summary>Wie Load, aber nach timeout kommt eine TimeoutException und der Request bricht ab.</summary>
+    /// <summary>Like Load, but after timeout a TimeoutException arrives and the request is canceled.</summary>
     public static IObservable<Product> LoadWithTimeout(
         Func<CancellationToken, Task<Product>> load, TimeSpan timeout, IScheduler scheduler) =>
-        // Timeout meldet die innere Subscription ab, und damit bricht FromAsync das Token ab.
+        // Timeout disposes the inner Subscription, and so FromAsync cancels the token.
         Observable
             .FromAsync(load, scheduler)
             .Timeout(timeout, scheduler);
 
-    /// <summary>Die ersten drei Preise als Liste, danach endet die Subscription.</summary>
+    /// <summary>The first three prices as a list, then the Subscription ends.</summary>
     public static async Task<IList<int>> FirstThreeAsync(IObservable<int> pricesCents) =>
-        // await auf ein IObservable liefert den letzten Wert. ToList macht daraus genau einen Wert.
-        // Für den ersten Wert gibt es FirstAsync, das Gegenstück zu firstValueFrom in RxJS.
+        // await on an IObservable returns the last value. ToList turns it into exactly one value.
+        // For the first value, there is FirstAsync, the counterpart to firstValueFrom in RxJS.
         await pricesCents.Take(3).ToList();
 }

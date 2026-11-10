@@ -1,29 +1,29 @@
-// Lektion rxnet-subscription-cleanup: Jede Subscription braucht ein Ende
+// Lesson rxnet-subscription-cleanup: Every subscription needs an end
 //
-// Aufgabe: Bau eine Komponente mit drei Subscriptions auf Interval und ein Event und
-// beende alle gemeinsam über ein CompositeDisposable und TakeUntil.
+// Task: Build a component with three subscriptions to Interval and an event, and
+// end them all together through a CompositeDisposable and TakeUntil.
 //
-// Die Ansicht einer Bestellung rendert:
-//  - jede Sekunde "tick <n>"                 (Interval)
-//  - alle fünf Sekunden "autosave <n>"       (Interval)
-//  - bei jedem Resize des Fensters "resize"  (Event)
-// Beim Dispose der Ansicht meldet jede Subscription mit Finally "<name> gestoppt".
+// The order view renders:
+//  - every second "tick <n>"                 (Interval)
+//  - every five seconds "autosave <n>"       (Interval)
+//  - on every window resize "resize"         (Event)
+// When the view is disposed, every Subscription reports "<name> gestoppt" (stopped) with Finally.
 
 namespace Exercises.RxNetSubscriptionCleanup;
 
 public sealed class OrderView : IDisposable
 {
-    // TODO: ein Subject<Unit> als Signal fürs Ende und ein CompositeDisposable für die Subscriptions
+    // TODO: a Subject<Unit> as the signal for the end and a CompositeDisposable for the subscriptions
 
     public OrderView(AppWindow window, IScheduler scheduler, Action<string> render)
     {
-        // TODO: drei Subscriptions, jeweils mit Select, Finally(() => render("… gestoppt"))
-        //       und TakeUntil als letztem Operator, gesammelt im CompositeDisposable
+        // TODO: three subscriptions, each with Select, Finally(() => render("… gestoppt"))
+        //       and TakeUntil as the last Operator, collected in the CompositeDisposable
         throw new NotImplementedException("TODO: OrderView");
     }
 
     public void Dispose()
     {
-        // TODO: Signal senden, Subject beenden, CompositeDisposable entsorgen
+        // TODO: Send the signal, complete the Subject, dispose the CompositeDisposable
     }
 }

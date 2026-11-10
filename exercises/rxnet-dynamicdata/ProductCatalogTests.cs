@@ -40,7 +40,7 @@ public class ProductCatalogTests
         catalog.Search("e");
 
         catalog.Upsert(Pads);
-        catalog.Upsert(Disc with { PriceCents = 590 }); // Sonderangebot
+        catalog.Upsert(Disc with { PriceCents = 590 }); // special offer
 
         Assert.Equal(["Bremsscheibe", "Zündkerze", "Bremsbeläge"], Names(catalog));
     }

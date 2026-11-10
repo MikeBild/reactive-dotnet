@@ -18,15 +18,15 @@ public class SharedResourceTests
 
         var firstSubscription = stream.Subscribe(first.Add);
         var secondSubscription = stream.Subscribe(second.Add);
-        Assert.Equal(["resource created"], log); // nur EINE Ressource für zwei Subscriber
+        Assert.Equal(["resource created"], log); // only ONE resource for two subscribers
 
         scheduler.AdvanceBy(3 * Second);
         firstSubscription.Dispose();
-        Assert.Equal(["resource created"], log); // der Zweite hört noch zu – Licht bleibt an
+        Assert.Equal(["resource created"], log); // the second one is still listening – the light stays on
 
         scheduler.AdvanceBy(2 * Second);
         secondSubscription.Dispose();
-        Assert.Equal(["resource created", "resource disposed"], log); // der Letzte macht das Licht aus
+        Assert.Equal(["resource created", "resource disposed"], log); // the last one turns off the light
 
         Assert.Equal([1, 2, 3], first);
         Assert.Equal([1, 2, 3, 4, 5], second);
@@ -45,7 +45,7 @@ public class SharedResourceTests
         scheduler.AdvanceBy(2 * Second);
 
         Assert.Equal(["resource created", "resource disposed", "resource created"], log);
-        Assert.Equal([1, 2], values); // Zähler beginnt wieder bei 1
+        Assert.Equal([1, 2], values); // counter starts at 1 again
     }
 
     [Fact]

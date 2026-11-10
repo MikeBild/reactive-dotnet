@@ -22,7 +22,7 @@ public class ObserverBasicsTests
     [Fact]
     public void Disposing_one_subscription_keeps_the_others_alive()
     {
-        // Im Original gab Subscribe "this" zurück: ein Dispose entfernte alle Observer.
+        // In the original, Subscribe returned "this": one Dispose removed all Observers.
         var a = new RecordingObserver<string>("a");
         var b = new RecordingObserver<string>("b");
         var hot = NameProducer.Cold().Publish(); // RxJS: connectable / multicast

@@ -1,8 +1,8 @@
 namespace Exercises.RxNetSubjectsMulticasting;
 
 /// <summary>
-/// Eine simulierte WebSocket-Verbindung. Sie zählt, wie oft sie geöffnet und geschlossen
-/// wird, und verteilt Nachrichten an alle offenen Verbindungen.
+/// A simulated WebSocket connection. It counts how often it is opened and closed,
+/// and distributes messages to all open connections.
 /// </summary>
 public sealed class FakeSocketServer
 {

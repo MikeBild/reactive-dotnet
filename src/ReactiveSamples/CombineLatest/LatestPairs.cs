@@ -3,10 +3,10 @@ using System.Reactive.Linq;
 namespace ReactiveSamples.CombineLatest;
 
 /// <summary>
-/// Modernisierung von Rx_Subject_Example: CombineLatest zweier Quellen.
-/// Früher wurden zwei Subjects von Hand befeuert. Heute ist der Operator eine Pure Function
-/// über zwei IObservable – woher die Werte kommen (Event, Timer, TestScheduler), ist egal.
-/// Ergebnis als ValueTuple statt Tuple&lt;int,string&gt;.
+/// Modernization of Rx_Subject_Example: CombineLatest of two sources.
+/// Earlier, two Subjects were fed by hand. Today the Operator is a Pure Function
+/// over two IObservable – where the values come from (event, timer, TestScheduler) does not matter.
+/// Result as a ValueTuple instead of Tuple&lt;int,string&gt;.
 /// </summary>
 public static class LatestPairs
 {

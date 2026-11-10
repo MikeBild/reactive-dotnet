@@ -1,25 +1,25 @@
-// Lektion rxnet-operators: Operatoren sind Extension Methods
+// Lesson rxnet-operators: Operators are Extension Methods
 //
-// Aufgabe: Verarbeite Nachrichten zum Bestellstatus: nach Typ filtern, Duplikate mit
-// DistinctUntilChanged weglassen und mit Scan zählen, als eigene Extension Methods.
+// Task: Process order status messages: filter by type, drop duplicates with
+// DistinctUntilChanged, and count with Scan, as your own Extension Methods.
 //
-// Ein eigener Operator ist nur eine Funktion von IObservable<A> nach IObservable<B>.
+// A custom Operator is just a function from IObservable<A> to IObservable<B>.
 
 namespace Exercises.RxNetOperators;
 
 public static class MessageOperators
 {
-    /// <summary>Lässt nur Nachrichten eines Typs durch, ohne direkt wiederholte Ids, und liefert deren Payload.</summary>
+    /// <summary>Lets only messages of one type through, without directly repeated Ids, and returns their payload.</summary>
     public static IObservable<TPayload> OfMessageType<TPayload>(this IObservable<Message> source, string type)
     {
-        // TODO: Where nach Type, DistinctUntilChanged nach Id, Select auf (TPayload)Payload!
+        // TODO: Where by Type, DistinctUntilChanged by Id, Select to (TPayload)Payload!
         throw new NotImplementedException("TODO: OfMessageType");
     }
 
-    /// <summary>Zählt die Nachrichten eines Typs ohne Duplikate, nach jeder Nachricht der Zwischenstand.</summary>
+    /// <summary>Counts the messages of one type without duplicates, the running count after every message.</summary>
     public static IObservable<int> CountOfType(this IObservable<Message> source, string type)
     {
-        // TODO: OfMessageType wiederverwenden und mit Scan zählen
+        // TODO: Reuse OfMessageType and count with Scan
         throw new NotImplementedException("TODO: CountOfType");
     }
 }

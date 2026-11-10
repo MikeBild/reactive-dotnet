@@ -2,7 +2,7 @@ namespace Exercises.RxNetFlattening;
 
 public class FlatteningTests : ReactiveTest
 {
-    // In diesen Tests ist ein Tick eine Zeiteinheit. Die Zeiten sind absolut.
+    // In these tests, one tick is one unit of time. The times are absolute.
 
     private static IReadOnlyList<Product> Found(string name) => [new Product(name, name, 990, 1)];
 
@@ -18,7 +18,7 @@ public class FlatteningTests : ReactiveTest
 
         Assert.Equal(["Zündkerze"], observer.Messages.Where(m => m.Value.HasValue).Select(m => m.Value.Value[0].Name));
         Assert.Equal(260, observer.Messages[0].Time);
-        Assert.Equal(Subscribe(210, 250), Assert.Single(slow.Subscriptions)); // abgebrochen
+        Assert.Equal(Subscribe(210, 250), Assert.Single(slow.Subscriptions)); // canceled
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class FlatteningTests : ReactiveTest
     {
         var scheduler = new TestScheduler();
         var changes = scheduler.CreateHotObservable(OnNext(210, "a"), OnNext(215, "b"), OnNext(220, "c"));
-        // a dauert länger als b und c, trotzdem muss a zuerst gespeichert sein
+        // a takes longer than b and c, yet a must be saved first
         Func<string, IObservable<string>> save = change => scheduler.CreateColdObservable(
             OnNext(change == "a" ? 50 : 5, change), OnCompleted<string>(change == "a" ? 50 : 5));
 
@@ -71,7 +71,7 @@ public class FlatteningTests : ReactiveTest
 
         var observer = scheduler.Start(() => Flattening.LoginOnClick(clicks, login));
 
-        Assert.Equal(2, logins); // der Doppelklick bei 220 startet keinen zweiten Login
+        Assert.Equal(2, logins); // the double click at 220 does not start a second login
         Assert.Equal([OnNext(260, "session 1"), OnNext(350, "session 2")], observer.Messages);
     }
 }

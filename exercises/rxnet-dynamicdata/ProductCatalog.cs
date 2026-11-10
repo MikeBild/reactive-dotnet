@@ -1,10 +1,10 @@
-// Lektion rxnet-dynamicdata: Ausblick DynamicData
+// Lesson rxnet-dynamicdata: A look at DynamicData
 //
-// Aufgabe: Halte die Produkte in einem SourceCache, filtere sie live nach Suchbegriff,
-// sortiere nach Preis und binde das Ergebnis an eine ReadOnlyObservableCollection.
+// Task: Keep the products in a SourceCache, filter them live by search term,
+// sort by price, and bind the result to a ReadOnlyObservableCollection.
 //
-// DynamicData ist für Listen, was Rx für einzelne Werte ist: Statt der ganzen Liste
-// fließen nur die Änderungen (ChangeSets) durch die Pipeline.
+// DynamicData is to lists what Rx is to single values: Instead of the whole list,
+// only the changes (ChangeSets) flow through the pipeline.
 
 using System.Collections.ObjectModel;
 using DynamicData;
@@ -14,19 +14,19 @@ namespace Exercises.RxNetDynamicData;
 
 public sealed class ProductCatalog : IDisposable
 {
-    // TODO: SourceCache<Product, string> mit der Id als Key, BehaviorSubject<string> für den Suchbegriff,
-    //       ein Feld für die ReadOnlyObservableCollection und eins für die Subscription
+    // TODO: SourceCache<Product, string> with the Id as key, BehaviorSubject<string> for the search term,
+    //       one field for the ReadOnlyObservableCollection and one for the Subscription
 
     public ProductCatalog()
     {
         // TODO: _products.Connect()
-        //         .Filter(Stream von Func<Product, bool> aus dem Suchbegriff, ohne Groß- und Kleinschreibung)
+        //         .Filter(stream of Func<Product, bool> from the search term, case-insensitive)
         //         .SortAndBind(out _visible, SortExpressionComparer<Product>.Ascending(p => p.PriceCents))
         //         .Subscribe()
         throw new NotImplementedException("TODO: ProductCatalog");
     }
 
-    /// <summary>Die gefilterte, nach Preis sortierte Sicht. Die View bindet nur an diese Collection.</summary>
+    /// <summary>The filtered view, sorted by price. The UI view binds only to this collection.</summary>
     public ReadOnlyObservableCollection<Product> Visible => throw new NotImplementedException("TODO: Visible");
 
     public void Upsert(params Product[] products) => throw new NotImplementedException("TODO: AddOrUpdate");
@@ -37,6 +37,6 @@ public sealed class ProductCatalog : IDisposable
 
     public void Dispose()
     {
-        // TODO: Subscription, SourceCache und Subject entsorgen
+        // TODO: Dispose the Subscription, SourceCache, and Subject
     }
 }

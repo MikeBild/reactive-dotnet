@@ -48,7 +48,7 @@ public class ProductLoaderTests
                 ct =>
                 {
                     ct.Register(() => cancelled = true);
-                    return new TaskCompletionSource<Product>().Task; // antwortet nie
+                    return new TaskCompletionSource<Product>().Task; // never responds
                 },
                 TimeSpan.FromSeconds(2),
                 scheduler)

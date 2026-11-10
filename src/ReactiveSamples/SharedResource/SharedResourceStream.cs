@@ -4,12 +4,12 @@ using System.Reactive.Linq;
 namespace ReactiveSamples.SharedResource;
 
 /// <summary>
-/// Modernisierung von "LastOneMakesLightOff" (RxSamples, 2013) bzw. Gist "thelastoneturnslightoff":
-/// Eine teure Ressource (Verbindung, Datei, Sensor) wird beim ersten Subscriber angelegt
-/// und beim letzten Unsubscribe wieder freigegeben – "der Letzte macht das Licht aus".
+/// Modernization of "LastOneMakesLightOff" (RxSamples, 2013), also gist "thelastoneturnslightoff":
+/// An expensive resource (connection, file, sensor) is created with the first subscriber
+/// and released again on the last unsubscribe – "the last one turns off the light".
 ///
-/// Bausteine: Observable.Using (Lebensdauer an das Abo binden) + Publish().RefCount()
-/// (RxJS: share()). Statt Debug.WriteLine protokolliert die Ressource in ein Log, damit es testbar ist.
+/// Building blocks: Observable.Using (bind the lifetime to the subscription) + Publish().RefCount()
+/// (RxJS: share()). Instead of Debug.WriteLine, the resource writes to a log so it is testable.
 /// </summary>
 public sealed class SharedResource(IList<string> log) : IDisposable
 {

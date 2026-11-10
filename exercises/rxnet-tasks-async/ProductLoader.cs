@@ -1,33 +1,33 @@
-// Lektion rxnet-tasks-async: Tasks und Observables arbeiten zusammen
+// Lesson rxnet-tasks-async: Tasks and Observables work together
 //
-// Aufgabe: Bind eine async-Methode mit CancellationToken per FromAsync ein, prüf im
-// Test, dass Dispose den Abbruch auslöst, und hol das Ergebnis mit await zurück.
+// Task: Wrap an async method with a CancellationToken using FromAsync, check in the
+// test that Dispose triggers cancellation, and get the result back with await.
 //
-// load steht für einen Request, etwa HttpClient.GetFromJsonAsync(url, ct).
+// load stands for a request, such as HttpClient.GetFromJsonAsync(url, ct).
 
 namespace Exercises.RxNetTasksAsync;
 
 public static class ProductLoader
 {
-    /// <summary>Startet load erst beim Subscribe. Dispose bricht das CancellationToken ab.</summary>
+    /// <summary>Starts load only on Subscribe. Dispose cancels the CancellationToken.</summary>
     public static IObservable<Product> Load(Func<CancellationToken, Task<Product>> load)
     {
         // TODO: Observable.FromAsync
         throw new NotImplementedException("TODO: Load");
     }
 
-    /// <summary>Wie Load, aber nach timeout kommt eine TimeoutException und der Request bricht ab.</summary>
+    /// <summary>Like Load, but after timeout a TimeoutException arrives and the request is canceled.</summary>
     public static IObservable<Product> LoadWithTimeout(
         Func<CancellationToken, Task<Product>> load, TimeSpan timeout, IScheduler scheduler)
     {
-        // TODO: Observable.FromAsync(load, scheduler) mit Timeout(timeout, scheduler)
+        // TODO: Observable.FromAsync(load, scheduler) with Timeout(timeout, scheduler)
         throw new NotImplementedException("TODO: LoadWithTimeout");
     }
 
-    /// <summary>Die ersten drei Preise als Liste, danach endet die Subscription.</summary>
+    /// <summary>The first three prices as a list, then the Subscription ends.</summary>
     public static Task<IList<int>> FirstThreeAsync(IObservable<int> pricesCents)
     {
-        // TODO: Take(3), ToList und await bzw. ToTask
+        // TODO: Take(3), ToList, and await or ToTask
         throw new NotImplementedException("TODO: FirstThreeAsync");
     }
 }

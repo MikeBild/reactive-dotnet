@@ -1,11 +1,11 @@
 namespace Exercises.RxNetSubscriptionCleanup;
 
-/// <summary>Ein Fenster mit einem klassischen .NET-Event. Es lebt länger als jede Ansicht darin.</summary>
+/// <summary>A window with a classic .NET event. It lives longer than any view inside it.</summary>
 public sealed class AppWindow
 {
     public event EventHandler? Resized;
 
-    /// <summary>Wie viele Handler gerade registriert sind. Ein vergessener Handler ist ein Memory Leak.</summary>
+    /// <summary>How many handlers are currently registered. A forgotten handler is a memory leak.</summary>
     public int HandlerCount => Resized?.GetInvocationList().Length ?? 0;
 
     public void Resize() => Resized?.Invoke(this, EventArgs.Empty);

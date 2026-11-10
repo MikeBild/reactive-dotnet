@@ -1,10 +1,10 @@
-// Lektion rxnet-reactiveui: Ausblick ReactiveUI
+// Lesson rxnet-reactiveui: A look at ReactiveUI
 //
-// Aufgabe: Bau das Warenkorb-ViewModel mit ReactiveObject, WhenAnyValue,
-// ObservableAsPropertyHelper und einem ReactiveCommand und teste es ohne UI.
+// Task: Build the cart ViewModel with ReactiveObject, WhenAnyValue,
+// ObservableAsPropertyHelper, and a ReactiveCommand, and test it without a UI.
 //
-// ReactiveUI 26 mit System.Reactive kommt aus dem Paket ReactiveUI.Reactive.
-// Die Typen liegen in zwei Namespaces:
+// ReactiveUI 26 with System.Reactive comes from the package ReactiveUI.Reactive.
+// The types live in two namespaces:
 //  - ReactiveUI.Reactive: ReactiveObject, RaiseAndSetIfChanged, ReactiveCommand
 //  - ReactiveUI.Binding.Reactive: WhenAnyValue, ToProperty, ObservableAsPropertyHelper
 
@@ -15,13 +15,13 @@ namespace Exercises.RxNetReactiveUi;
 
 public sealed class CheckoutViewModel : ReactiveObject
 {
-    // TODO: Feld für Items (leere Liste) und ein ObservableAsPropertyHelper<int> für TotalCents
+    // TODO: Field for Items (empty list) and an ObservableAsPropertyHelper<int> for TotalCents
 
     public CheckoutViewModel(Func<IReadOnlyList<CartItem>, IObservable<string>> placeOrder, IScheduler scheduler)
     {
         // TODO: TotalCents: this.WhenAnyValue(x => x.Items).Select(Cart.TotalCents).ToProperty(this, x => x.TotalCents, scheduler)
         // TODO: PlaceOrder: ReactiveCommand.CreateFromObservable(() => placeOrder(Items), canPlace, scheduler)
-        //       canPlace ist ein Stream: Items nicht leer
+        //       canPlace is a stream: Items not empty
         throw new NotImplementedException("TODO: CheckoutViewModel");
     }
 

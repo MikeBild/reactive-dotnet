@@ -40,7 +40,7 @@ public class FizzBuzzTests
         var connectable = source.FizzBuzz().Publish();
         connectable.Subscribe(console.Add);
         connectable.Subscribe(debug.Add);
-        Assert.Empty(console); // bis Connect passiert nichts
+        Assert.Empty(console); // nothing happens until Connect
 
         using (connectable.Connect())
         {

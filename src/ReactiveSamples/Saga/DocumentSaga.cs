@@ -5,16 +5,16 @@ using ReactiveSamples.MessageBus;
 namespace ReactiveSamples.Saga;
 
 /// <summary>
-/// Modernisierung von Gist "ZeroMqDocumentSaga" (Minimod.MessageProcessor + ZeroMQ, 2011):
-/// Ein Dokument wandert als Nachricht von Prozessor zu Prozessor; jeder füllt sein Kapitel,
-/// setzt das Lesezeichen weiter und schickt das Dokument zurück auf den Bus (Routing Slip).
+/// Modernization of gist "ZeroMqDocumentSaga" (Minimod.MessageProcessor + ZeroMQ, 2011):
+/// A document travels as a message from processor to processor; each one fills in its chapter,
+/// moves the bookmark on, and sends the document back onto the bus (Routing Slip).
 ///
-/// Was anders ist:
-/// - ZeroMQ-Sockets und die Minimod-Pakete sind ersetzt durch den In-Memory-<see cref="RxMessageBus"/>.
-///   In Produktion übernimmt das heute ein Broker (RabbitMQ, NATS, Azure Service Bus, Kafka)
-///   mit einem Saga-Framework (MassTransit, NServiceBus, Wolverine) – siehe README.
-/// - Die Nachricht wurde früher mutiert und über einen versteckten Kontext erneut gesendet.
-///   Heute: unveränderlicher record + <c>with</c>-Ausdruck, Bookmark als enum statt String.
+/// What is different:
+/// - ZeroMQ sockets and the Minimod packages are replaced by the in-memory <see cref="RxMessageBus"/>.
+///   In production, a broker (RabbitMQ, NATS, Azure Service Bus, Kafka) handles this today
+///   with a saga framework (MassTransit, NServiceBus, Wolverine) – see README.
+/// - The message used to be mutated and resent through a hidden context.
+///   Today: immutable record + <c>with</c> expression, Bookmark as an enum instead of a string.
 /// </summary>
 public enum Bookmark { Chapter1, Chapter2, Done }
 
@@ -31,14 +31,14 @@ public sealed record ChaptersDocument(
 
 public static class DocumentSaga
 {
-    /// <summary>Ein Prozessor = Filter auf ein Lesezeichen + reine Transformation + Weitersenden.</summary>
+    /// <summary>One processor = filter on a bookmark + pure transformation + forwarding.</summary>
     private static IDisposable Step(RxMessageBus bus, Bookmark at, Func<ChaptersDocument, ChaptersDocument> fill) =>
         bus.Messages<ChaptersDocument>()
             .Where(document => document.Bookmark == at)
             .Select(fill)
             .Subscribe(bus.Send);
 
-    /// <summary>Verdrahtet alle Prozessoren und liefert den Strom fertiger Dokumente.</summary>
+    /// <summary>Wires up all processors and returns the stream of finished documents.</summary>
     public static (IObservable<ChaptersDocument> Completed, IDisposable Wiring) Wire(RxMessageBus bus)
     {
         var chapter1 = Step(bus, Bookmark.Chapter1, d => d with { Chapter1 = "Filled", Bookmark = Bookmark.Chapter2 });

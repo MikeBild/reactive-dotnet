@@ -42,7 +42,7 @@ public class MessageBusTests
     [Fact]
     public void A_throwing_handler_does_not_kill_the_bus()
     {
-        // Original: catch → _subject.OnError(e) → Bus für alle tot.
+        // Original: catch → _subject.OnError(e) → bus dead for everyone.
         using var bus = new RxMessageBus();
         var failures = new List<HandlerFailure>();
         var received = new List<AddTodo>();
@@ -62,14 +62,14 @@ public class MessageBusTests
     public void ObserveOn_moves_delivery_to_the_scheduler()
     {
         using var bus = new RxMessageBus();
-        var scheduler = new TestScheduler(); // steht hier für den UI-Dispatcher
+        var scheduler = new TestScheduler(); // stands for the UI dispatcher here
         var received = new List<AddTodo>();
         bus.Register<AddTodo>(received.Add, observeOn: scheduler);
 
         bus.Send(new AddTodo("x"));
-        Assert.Empty(received);   // noch nicht zugestellt …
+        Assert.Empty(received);   // not delivered yet …
         scheduler.Start();
-        Assert.Single(received);  // … erst, wenn der Scheduler dran ist
+        Assert.Single(received);  // … only once the scheduler gets its turn
     }
 
     [Fact]
@@ -80,9 +80,9 @@ public class MessageBusTests
         var received = new List<AddTodo>();
         bus.Messages<AddTodo>().SubscribeOn(scheduler).Subscribe(received.Add);
 
-        bus.Send(new AddTodo("verloren")); // Abo existiert noch gar nicht → Nachricht geht verloren
+        bus.Send(new AddTodo("verloren")); // no subscription exists yet → the message gets lost
         scheduler.Start();
-        bus.Send(new AddTodo("synchron"));  // danach: Zustellung direkt auf dem Aufrufer-Thread
+        bus.Send(new AddTodo("synchron"));  // afterwards: delivery directly on the caller's thread
 
         Assert.Equal([new AddTodo("synchron")], received);
     }

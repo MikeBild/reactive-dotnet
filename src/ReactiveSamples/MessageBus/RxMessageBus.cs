@@ -5,18 +5,18 @@ using System.Reactive.Subjects;
 namespace ReactiveSamples.MessageBus;
 
 /// <summary>
-/// Modernisierung von ReactiveMVVM/Bus (Silverlight, 2011): In-Memory-Message-Bus auf Rx-Basis.
+/// Modernization of ReactiveMVVM/Bus (Silverlight, 2011): in-memory message bus based on Rx.
 ///
-/// Zwei lehrreiche Fehler im Original:
-/// 1. <c>catch (Exception e) { _subject.OnError(e); }</c> – ein einziger werfender Handler
-///    beendete den Subject und damit den Bus für ALLE Abonnenten dauerhaft
-///    (nach OnError ist ein Observable terminiert). Hier wird der Fehler isoliert und als
-///    eigener Stream <see cref="Errors"/> gemeldet.
-/// 2. <c>Register(action, scheduler)</c> nutzte SubscribeOn – das verlegt nur den Moment des
-///    Abonnierens, nicht die Zustellung. Gemeint war ObserveOn (z. B. UI-Thread).
+/// Two instructive bugs in the original:
+/// 1. <c>catch (Exception e) { _subject.OnError(e); }</c> – a single throwing handler
+///    terminated the Subject and with it the bus for ALL subscribers permanently
+///    (after OnError, an Observable is terminated). Here the error is isolated and reported
+///    as a separate stream <see cref="Errors"/>.
+/// 2. <c>Register(action, scheduler)</c> used SubscribeOn – that only moves the moment of
+///    subscribing, not the delivery. ObserveOn was meant (e.g. UI thread).
 ///
-/// Ein Subject ist hier legitim: der Bus IST eine imperative Brücke ("Quelle ohne Observable").
-/// Nach außen wird aber nur IObservable gezeigt, nie der Subject selbst.
+/// A Subject is legitimate here: the bus IS an imperative bridge ("source without an Observable").
+/// But only IObservable is exposed, never the Subject itself.
 /// </summary>
 public interface IMessage;
 public interface ICommandMessage : IMessage;
@@ -35,7 +35,7 @@ public sealed class RxMessageBus : IDisposable
 
     public void Publish(IEventMessage @event) => _messages.OnNext(@event);
 
-    /// <summary>Typisierter Teilstrom – das eigentliche Rx-Interface des Busses.</summary>
+    /// <summary>Typed substream – the actual Rx interface of the bus.</summary>
     public IObservable<T> Messages<T>() where T : IMessage => _messages.OfType<T>();
 
     public IDisposable Register<T>(Action<T> handler, Func<T, bool>? predicate = null, IScheduler? observeOn = null)
@@ -48,7 +48,7 @@ public sealed class RxMessageBus : IDisposable
         }
         if (observeOn is not null)
         {
-            stream = stream.ObserveOn(observeOn); // nicht SubscribeOn!
+            stream = stream.ObserveOn(observeOn); // not SubscribeOn
         }
         return stream.Subscribe(message =>
         {

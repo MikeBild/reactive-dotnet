@@ -10,13 +10,13 @@ public sealed class CheckoutViewModel : ReactiveObject
 
     public CheckoutViewModel(Func<IReadOnlyList<CartItem>, IObservable<string>> placeOrder, IScheduler scheduler)
     {
-        // WhenAnyValue macht aus PropertyChanged ein IObservable, ToProperty macht daraus wieder eine Property.
+        // WhenAnyValue turns PropertyChanged into an IObservable, ToProperty turns it back into a property.
         _totalCents = this
             .WhenAnyValue(x => x.Items)
             .Select(Cart.TotalCents)
             .ToProperty(this, x => x.TotalCents, scheduler);
 
-        // CanExecute ist ein Stream: Der Command ist nur aktiv, wenn der Warenkorb nicht leer ist.
+        // CanExecute is a stream: The command is only active when the cart is not empty.
         var canPlace = this.WhenAnyValue(x => x.Items).Select(items => items.Count > 0);
         PlaceOrder = ReactiveCommand.CreateFromObservable(() => placeOrder(Items), canPlace, scheduler);
     }

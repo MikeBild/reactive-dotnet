@@ -1,6 +1,6 @@
 namespace Exercises.RxNetErrorHandling;
 
-/// <summary>Ergebnis eines Requests als Wert: Erfolg oder Fehler, nie ein abgebrochener Stream.</summary>
+/// <summary>Result of a request as a value: success or failure, never an aborted stream.</summary>
 public abstract record LoadResult<T>(string Url);
 
 public sealed record Loaded<T>(string Url, T Value) : LoadResult<T>(Url);

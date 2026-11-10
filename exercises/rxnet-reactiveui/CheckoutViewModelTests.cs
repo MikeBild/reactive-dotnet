@@ -26,7 +26,7 @@ public class CheckoutViewModelTests
         var scheduler = new TestScheduler();
         var vm = new CheckoutViewModel(_ => Observable.Return("o1"), scheduler);
         var changed = new List<string?>();
-        _ = vm.TotalCents; // die Property einmal lesen, dann ist sie aktiv
+        _ = vm.TotalCents; // read the property once, then it is active
         vm.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
 
         vm.Add(Brake);

@@ -1,27 +1,27 @@
-// Lektion rxnet-cold-hot: Cold oder Hot, wer startet den Producer?
+// Lesson rxnet-cold-hot: Cold or hot, who starts the producer?
 //
-// Aufgabe: Abonniere ein Observable aus Observable.Defer zweimal, zähle die Requests
-// mit Do und teile die Ausführung danach mit Publish und RefCount.
+// Task: Subscribe twice to an Observable from Observable.Defer, count the requests
+// with Do, and then share the execution with Publish and RefCount.
 //
-// load steht für den Request, der den angemeldeten Kunden lädt.
+// load stands for the request that loads the signed-in customer.
 
 namespace Exercises.RxNetColdHot;
 
 public static class CustomerStream
 {
-    /// <summary>Cold: Jedes Subscribe startet einen eigenen Request.</summary>
+    /// <summary>Cold: Every Subscribe starts its own request.</summary>
     public static IObservable<Customer> Cold(
         Func<CancellationToken, Task<Customer>> load, Action onRequest, IScheduler scheduler)
     {
-        // TODO: Observable.Defer(() => Observable.FromAsync(load, scheduler)) und mit Do je Antwort onRequest aufrufen
+        // TODO: Observable.Defer(() => Observable.FromAsync(load, scheduler)) and call onRequest with Do for each response
         throw new NotImplementedException("TODO: Cold");
     }
 
-    /// <summary>Hot: Alle gleichzeitigen Subscriber teilen sich einen Request.</summary>
+    /// <summary>Hot: All concurrent subscribers share one request.</summary>
     public static IObservable<Customer> Shared(
         Func<CancellationToken, Task<Customer>> load, Action onRequest, IScheduler scheduler)
     {
-        // TODO: Cold wiederverwenden und mit Publish().RefCount() teilen
+        // TODO: Reuse Cold and share it with Publish().RefCount()
         throw new NotImplementedException("TODO: Shared");
     }
 }

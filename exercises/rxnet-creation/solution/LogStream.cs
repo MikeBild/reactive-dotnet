@@ -2,28 +2,28 @@ namespace Exercises.RxNetCreation;
 
 public static class LogStream
 {
-    /// <summary>Jeder Klick auf den Button wird ein Wert. Dispose meldet den Handler ab.</summary>
+    /// <summary>Every click on the button becomes a value. Dispose removes the handler.</summary>
     public static IObservable<string> Clicks(Button button) =>
-        // FromEventPattern registriert pro Subscriber einen eigenen Handler und entfernt ihn beim Dispose.
+        // FromEventPattern registers a separate handler per subscriber and removes it on Dispose.
         Observable
             .FromEventPattern(h => button.Clicked += h, h => button.Clicked -= h)
             .Select(_ => "click");
 
-    /// <summary>Zählt ab 0 hoch, ein Wert pro period.</summary>
+    /// <summary>Counts up from 0, one value per period.</summary>
     public static IObservable<long> Ticks(TimeSpan period, IScheduler scheduler) =>
         Observable.Interval(period, scheduler);
 
-    /// <summary>Lädt den Kunden erst beim Subscribe, für jeden Subscriber neu.</summary>
+    /// <summary>Loads the customer only on Subscribe, anew for every subscriber.</summary>
     public static IObservable<Customer> LoadCustomer(Func<CancellationToken, Task<Customer>> load, IScheduler scheduler) =>
-        // FromAsync ruft load erst beim Subscribe auf und bricht das Token beim Dispose ab.
-        // Ein Task allein wäre eager: Er läuft ab dem Aufruf, egal ob jemand zuhört.
+        // FromAsync calls load only on Subscribe and cancels the token on Dispose.
+        // A task alone would be eager: It runs from the moment it is called, whether anyone listens or not.
         Observable.FromAsync(load, scheduler);
 
-    /// <summary>Macht aus jedem Wert eine Zeile "prefix: wert".</summary>
+    /// <summary>Turns every value into a line "prefix: value".</summary>
     public static IObservable<string> WithPrefix<T>(this IObservable<T> source, string prefix) =>
         source.Select(value => $"{prefix}: {value}");
 
-    /// <summary>Alle drei Quellen als ein Log-Stream mit den Präfixen click, tick und customer.</summary>
+    /// <summary>All three sources as one log stream with the prefixes click, tick, and customer.</summary>
     public static IObservable<string> Create(
         Button button, TimeSpan period, Func<CancellationToken, Task<Customer>> load, IScheduler scheduler) =>
         Observable.Merge(

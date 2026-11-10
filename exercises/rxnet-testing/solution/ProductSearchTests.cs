@@ -6,7 +6,7 @@ public class ProductSearchTests : ReactiveTest
 
     private static IReadOnlyList<string> Results(params string[] names) => names;
 
-    /// <summary>Startet die Suche ab Tick 0 und hält sie zehn Sekunden virtuelle Zeit offen.</summary>
+    /// <summary>Starts the search at tick 0 and keeps it open for ten seconds of virtual time.</summary>
     private static ITestableObserver<SearchState> Run(
         TestScheduler scheduler, IObservable<string> terms, Func<string, IObservable<IReadOnlyList<string>>> search) =>
         scheduler.Start(
@@ -46,7 +46,7 @@ public class ProductSearchTests : ReactiveTest
 
         Assert.Equal(["Brems"], searched);
         var message = Assert.Single(observer.Messages);
-        Assert.Equal(321 * Ms, message.Time); // 20 ms + 300 ms Ruhe + 1 ms Suche
+        Assert.Equal(321 * Ms, message.Time); // 20 ms + 300 ms quiet + 1 ms search
         Assert.Equal(["Bremsscheibe"], Assert.IsType<SearchOk>(message.Value.Value).Results);
     }
 
@@ -78,7 +78,7 @@ public class ProductSearchTests : ReactiveTest
 
         var observer = Run(scheduler, terms, term => term == "Brems" ? slow : fast);
 
-        // Brems: Ruhe bis 310 ms, Suche startet. Zünd: Ruhe bis 710 ms, Brems wird abgebrochen.
+        // Brems: quiet until 310 ms, search starts. Zünd: quiet until 710 ms, Brems is canceled.
         Assert.Equal(Subscribe(310 * Ms, 710 * Ms), Assert.Single(slow.Subscriptions));
         var message = Assert.Single(observer.Messages);
         Assert.Equal(711 * Ms, message.Time);

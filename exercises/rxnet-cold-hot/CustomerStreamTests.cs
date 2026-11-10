@@ -61,8 +61,8 @@ public class CustomerStreamTests
     [Fact]
     public void Shared_nach_dem_Ende_bekommt_ein_spaeter_Subscriber_nur_OnCompleted()
     {
-        // Anders als share() in RxJS startet Publish().RefCount() nach OnCompleted nicht neu:
-        // Das Subject hinter Publish ist beendet, späte Subscriber bekommen nur noch OnCompleted.
+        // Unlike share() in RxJS, Publish().RefCount() does not restart after OnCompleted:
+        // The Subject behind Publish has completed, late subscribers only get OnCompleted.
         var scheduler = new TestScheduler();
         var counter = new Counter();
         var customer = CustomerStream.Shared(counter.Load, counter.OnRequest, scheduler);

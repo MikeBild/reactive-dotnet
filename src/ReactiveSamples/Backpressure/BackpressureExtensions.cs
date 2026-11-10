@@ -5,27 +5,27 @@ using System.Threading.Channels;
 namespace ReactiveSamples.Backpressure;
 
 /// <summary>
-/// Neu (kein Original von 2010–2013): Rx.NET ist reines Push und kennt – wie RxJS – keine Backpressure.
-/// Ist der Consumer langsamer als der Producer, gibt es zwei Wege:
-/// 1. Verlustbehaftet im Strom reduzieren: Sample, Throttle (= RxJS debounceTime), Buffer.
-/// 2. Auf Pull umstellen: IAsyncEnumerable über einen begrenzten Channel&lt;T&gt;.
-///    Der Consumer bestimmt das Tempo; was bei vollem Puffer passiert, ist explizit (BoundedChannelFullMode).
+/// New (no original from 2010–2013): Rx.NET is pure push and, like RxJS, has no Backpressure.
+/// If the consumer is slower than the producer, there are two ways:
+/// 1. Reduce lossily in the stream: Sample, Throttle (= RxJS debounceTime), Buffer.
+/// 2. Switch to pull: IAsyncEnumerable over a bounded Channel&lt;T&gt;.
+///    The consumer sets the pace; what happens when the buffer is full is explicit (BoundedChannelFullMode).
 /// </summary>
 public static class BackpressureExtensions
 {
-    /// <summary>Nur den jeweils letzten Wert pro Zeitfenster weitergeben (RxJS: sampleTime).</summary>
+    /// <summary>Pass on only the latest value per time window (RxJS: sampleTime).</summary>
     public static IObservable<T> LatestPer<T>(this IObservable<T> source, TimeSpan period, IScheduler scheduler) =>
         source.Sample(period, scheduler);
 
-    /// <summary>Werte in Batches bündeln – weniger, dafür größere Arbeitspakete (RxJS: bufferTime/bufferCount).</summary>
+    /// <summary>Group values into batches – fewer but larger work packages (RxJS: bufferTime/bufferCount).</summary>
     public static IObservable<IList<T>> Batches<T>(this IObservable<T> source, TimeSpan span, int maxCount, IScheduler scheduler) =>
         source.Buffer(span, maxCount, scheduler).Where(batch => batch.Count > 0);
 
     /// <summary>
-    /// Push → Pull: Werte landen in einem begrenzten Channel, der Consumer liest per await foreach.
-    /// Mit DropOldest bleibt der Producer nie hängen, verliert aber bewusst die ältesten Werte;
-    /// mit Wait blockiert OnNext, bis Platz frei ist – das bremst einen synchronen Producer (echte Backpressure),
-    /// ist aber bei einem Timer-/Event-Producer meist keine gute Idee.
+    /// Push → pull: Values land in a bounded Channel, the consumer reads with await foreach.
+    /// With DropOldest, the producer never gets stuck but deliberately loses the oldest values;
+    /// with Wait, OnNext blocks until there is room – this slows down a synchronous producer (real Backpressure),
+    /// but is usually not a good idea for a timer or event producer.
     /// </summary>
     public static async IAsyncEnumerable<T> ToBoundedAsyncEnumerable<T>(
         this IObservable<T> source,
@@ -40,13 +40,13 @@ public static class BackpressureExtensions
             SingleWriter = true,
         });
 
-        // Bei Wait darf der Producer nicht auf dem Thread des Lesers laufen, sonst wartet ein
-        // synchroner Producer (z. B. Observable.Range) auf einen Leser, der noch gar nicht liest.
-        // SubscribeOn verlegt das Abonnieren (und damit die synchrone Emission) auf den Thread-Pool.
+        // With Wait, the producer must not run on the reader's thread, otherwise a
+        // synchronous producer (e.g. Observable.Range) waits for a reader that is not reading yet.
+        // SubscribeOn moves subscribing (and with it the synchronous emission) to the thread pool.
         var producer = fullMode == BoundedChannelFullMode.Wait ? source.SubscribeOn(TaskPoolScheduler.Default) : source;
 
-        // Bricht der Consumer vorzeitig ab (break, Exception, Cancellation), darf ein in WriteAsync
-        // wartender Producer nicht für immer hängen bleiben.
+        // If the consumer stops early (break, exception, cancellation), a producer waiting in
+        // WriteAsync must not stay stuck forever.
         using var stop = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         var subscription = producer.Subscribe(
             value =>
@@ -62,7 +62,7 @@ public static class BackpressureExtensions
                 }
                 catch (OperationCanceledException)
                 {
-                    // Consumer ist weg – Wert verwerfen.
+                    // Consumer is gone – drop the value.
                 }
             },
             error => channel.Writer.TryComplete(error),
@@ -77,8 +77,8 @@ public static class BackpressureExtensions
         }
         finally
         {
-            subscription.Dispose(); // erst abmelden …
-            stop.Cancel();          // … dann einen evtl. in WriteAsync wartenden Producer freigeben
+            subscription.Dispose(); // unsubscribe first …
+            stop.Cancel();          // … then release a producer that may be waiting in WriteAsync
         }
     }
 }

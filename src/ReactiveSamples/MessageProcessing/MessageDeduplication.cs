@@ -3,12 +3,12 @@ using System.Reactive.Linq;
 namespace ReactiveSamples.MessageProcessing;
 
 /// <summary>
-/// Modernisierung von Rx_MessageProcessing (2012):
-/// - Tuple&lt;IMyMessage, IMyMessage&gt; + zwei fast identische Klassen → ein record MessagePair.
-/// - PropertyComparer per Reflection (mit object-== und zu Equals inkonsistentem GetHashCode)
-///   → typsicherer Comparer.
-/// Die fachliche Regel bleibt erhalten: ein Paar gilt als "unverändert", wenn sich die Daten der
-/// ersten ODER der zweiten Nachricht nicht geändert haben.
+/// Modernization of Rx_MessageProcessing (2012):
+/// - Tuple&lt;IMyMessage, IMyMessage&gt; + two almost identical classes → one record MessagePair.
+/// - PropertyComparer via reflection (with object == and a GetHashCode inconsistent with Equals)
+///   → type-safe comparer.
+/// The business rule stays the same: a pair counts as "unchanged" if the data of the
+/// first OR the second message has not changed.
 /// </summary>
 public interface IMessage
 {
@@ -25,11 +25,11 @@ public sealed record MessagePair(IMessage First, IMessage Second)
 
 public static class MessageDeduplication
 {
-    /// <summary>Kurzform, wenn ein Schlüssel reicht (RxJS: distinctUntilChanged / distinctUntilKeyChanged).</summary>
+    /// <summary>Short form when one key is enough (RxJS: distinctUntilChanged / distinctUntilKeyChanged).</summary>
     public static IObservable<MessagePair> DistinctByFirst(this IObservable<MessagePair> source) =>
         source.DistinctUntilChanged(pair => pair.First.Data);
 
-    /// <summary>Die Original-Regel ("erste ODER zweite Nachricht gleich") braucht einen Comparer.</summary>
+    /// <summary>The original rule ("first OR second message equal") needs a comparer.</summary>
     public static IObservable<MessagePair> DistinctByEitherData(this IObservable<MessagePair> source) =>
         source.DistinctUntilChanged(EitherDataComparer.Instance);
 
@@ -41,8 +41,8 @@ public static class MessageDeduplication
             previous is not null && current is not null &&
             (previous.First.Data == current.First.Data || previous.Second.Data == current.Second.Data);
 
-        // DistinctUntilChanged ruft nur Equals auf; eine konstante Hash-Funktion ist für eine
-        // nicht-transitive Regel die einzig ehrliche Implementierung.
+        // DistinctUntilChanged only calls Equals; a constant hash function is the only honest
+        // implementation for a non-transitive rule.
         public int GetHashCode(MessagePair obj) => 0;
     }
 }

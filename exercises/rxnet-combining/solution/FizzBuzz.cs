@@ -4,19 +4,19 @@ namespace Exercises.RxNetCombining;
 
 public static class FizzBuzz
 {
-    /// <summary>Wiederholt die Werte endlos: Cycle(["a", "b"]) liefert a, b, a, b, …</summary>
+    /// <summary>Repeats the values endlessly: Cycle(["a", "b"]) yields a, b, a, b, …</summary>
     public static IObservable<T> Cycle<T>(params T[] values) =>
-        // Synchron und endlos: Wer das allein abonniert, kommt nur mit Take wieder heraus.
+        // Synchronous and endless: If you subscribe to this alone, only Take gets you out again.
         values.ToObservable().Repeat();
 
-    /// <summary>FizzBuzz von 1 bis max als Stream von Strings.</summary>
+    /// <summary>FizzBuzz from 1 to max as a stream of strings.</summary>
     public static IObservable<string> Create(int max = 100) =>
-        // Zip paart den n-ten Wert beider Quellen und endet, sobald die kürzere Quelle fertig ist,
-        // hier Range. Danach meldet es den endlosen Zyklus ab.
-        // CombineLatest wäre falsch: Es paart den neuesten Stand, nicht Wert für Wert.
+        // Zip pairs the nth value of both sources and ends as soon as the shorter source completes,
+        // here Range. Then it unsubscribes from the endless cycle.
+        // CombineLatest would be wrong: It pairs the latest state, not value by value.
         //
-        // Zip wird zweimal paarweise angewendet. Die Variante Observable.Zip(a, b, c, …) mit drei
-        // Quellen auf einmal endet bei zwei synchronen, endlosen Zyklen nicht. Probier es aus.
+        // Zip is applied twice, pair by pair. The variant Observable.Zip(a, b, c, …) with three
+        // sources at once does not end with two synchronous, endless cycles. Try it.
         Observable.Range(1, max)
             .Zip(Cycle("", "", "Fizz"), (number, fizz) => (number, fizz))
             .Zip(Cycle("", "", "", "", "Buzz"), (pair, buzz) => pair.fizz + buzz is { Length: > 0 } word

@@ -38,11 +38,11 @@ public class MessageOperatorsTests
         using var subscription = messages.CountOfType("order-status").Subscribe(counts.Add);
 
         messages.OnNext(Placed);
-        messages.OnNext(Placed); // Duplikat
+        messages.OnNext(Placed); // duplicate
         messages.OnNext(Chat);
         messages.OnNext(Paid);
 
-        // Der Strom ist nicht beendet, trotzdem liegen die Zwischenstände schon vor.
+        // The stream has not completed, yet the intermediate counts are already there.
         Assert.Equal([1, 2], counts);
     }
 }

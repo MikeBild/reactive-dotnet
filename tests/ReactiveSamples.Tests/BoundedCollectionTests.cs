@@ -20,7 +20,7 @@ public class BoundedCollectionTests
     [Fact]
     public void Insert_at_front_evicts_the_oldest_not_the_new_item()
     {
-        // Das Original entfernte per RemoveAt(0) genau das eben eingefügte Element.
+        // The original removed, via RemoveAt(0), exactly the element just inserted.
         var collection = new BoundedObservableCollection<int>(3) { 1, 2, 3 };
         collection.Insert(0, 9);
         Assert.Equal([9, 2, 3], collection);

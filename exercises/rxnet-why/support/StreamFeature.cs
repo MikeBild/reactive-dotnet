@@ -1,10 +1,10 @@
 namespace Exercises.RxNetWhy;
 
-/// <summary>Woher kommen die Werte?</summary>
+/// <summary>Where do the values come from?</summary>
 public enum Source { Ui, WebSocket, ServerSentEvents, Polling, Queue, Timer, Other }
 
-/// <summary>Was brauchst du, wenn die Werte da sind? Die Punkte aus der Checkliste im Handout.</summary>
+/// <summary>What do you need once the values are there? The points from the checklist in the handout.</summary>
 public enum Need { Combine, Cancel, Throttle, Buffer, Retry }
 
-/// <summary>Ein Feature, bei dem Werte über die Zeit eintreffen.</summary>
+/// <summary>A feature in which values arrive over time.</summary>
 public sealed record StreamFeature(string Name, Source Source, IReadOnlyList<Need> Needs, string Why);

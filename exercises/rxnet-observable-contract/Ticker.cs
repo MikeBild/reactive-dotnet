@@ -1,23 +1,23 @@
-// Lektion rxnet-observable-contract: Ohne Subscribe passiert nichts
+// Lesson rxnet-observable-contract: Nothing happens without Subscribe
 //
-// Aufgabe: Schreib mit Observable.Create einen Ticker, der auf einem IScheduler
-// hochzählt, nach fünf Werten OnCompleted meldet und beim Dispose den Timer stoppt.
+// Task: Use Observable.Create to write a ticker that counts up on an IScheduler,
+// signals OnCompleted after five values, and stops the timer on Dispose.
 //
-// Der Timer läuft über den IScheduler, nicht über System.Threading.Timer. So
-// stellen die Tests die Zeit mit einem TestScheduler vor, ohne zu warten.
+// The timer runs on the IScheduler, not on System.Threading.Timer. This way
+// the tests advance time with a TestScheduler, without waiting.
 
 namespace Exercises.RxNetObservableContract;
 
 public static class Ticker
 {
-    /// <summary>Zählt ab 0 im Takt von period hoch und meldet nach count Werten OnCompleted.</summary>
+    /// <summary>Counts up from 0 every period and signals OnCompleted after count values.</summary>
     public static IObservable<int> Create(TimeSpan period, IScheduler scheduler, int count = 5)
     {
         // TODO: Observable.Create<int>(observer => { … })
-        //  - Timer mit scheduler.SchedulePeriodic(period, () => …) starten
-        //  - bei jedem Tick observer.OnNext(wert++)
-        //  - nach count Werten observer.OnCompleted() und den Timer stoppen
-        //  - das IDisposable des Timers zurückgeben, damit Dispose ihn stoppt
+        //  - start the timer with scheduler.SchedulePeriodic(period, () => …)
+        //  - on every tick, observer.OnNext(value++)
+        //  - after count values, observer.OnCompleted() and stop the timer
+        //  - return the timer's IDisposable so Dispose stops it
         throw new NotImplementedException("TODO: Ticker.Create");
     }
 }

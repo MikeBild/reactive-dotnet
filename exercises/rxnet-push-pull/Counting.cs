@@ -1,25 +1,25 @@
-// Lektion rxnet-push-pull: Push statt Pull
+// Lesson rxnet-push-pull: Push instead of pull
 //
-// Aufgabe: Schreib einen Iterator mit yield return für die Zahlen eins bis zehn und
-// ein Observable mit denselben Werten. Vergleiche, wer jeweils den nächsten Wert anstößt.
+// Task: Write an iterator with yield return for the numbers one to ten and
+// an Observable with the same values. Compare who triggers the next value in each case.
 //
-// onProduce meldet, wann ein Wert entsteht. So sehen die Tests, wer das Tempo bestimmt.
+// onProduce reports when a value is produced. This way the tests see who sets the pace.
 
 namespace Exercises.RxNetPushPull;
 
 public static class Counting
 {
-    /// <summary>Pull: Der Consumer holt jeden Wert mit MoveNext.</summary>
+    /// <summary>Pull: The consumer fetches every value with MoveNext.</summary>
     public static IEnumerable<int> CountTo(int max, Action<int>? onProduce = null)
     {
-        // TODO: for-Schleife mit onProduce?.Invoke(n) und yield return n
+        // TODO: for loop with onProduce?.Invoke(n) and yield return n
         throw new NotImplementedException("TODO: CountTo");
     }
 
-    /// <summary>Push: Der Producer schickt alle Werte, sobald jemand Subscribe aufruft.</summary>
+    /// <summary>Push: The producer sends all values as soon as someone calls Subscribe.</summary>
     public static IObservable<int> CountToObservable(int max, Action<int>? onProduce = null)
     {
-        // TODO: Observable.Create, darin OnNext für jeden Wert und am Ende OnCompleted
+        // TODO: Observable.Create, inside it OnNext for every value and OnCompleted at the end
         throw new NotImplementedException("TODO: CountToObservable");
     }
 }

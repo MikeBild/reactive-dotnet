@@ -6,7 +6,7 @@ namespace ReactiveSamples.Tests;
 
 public class CompositeDataModelTests
 {
-    // Daten aus RxSamples/composite_data_model (posts.json, comments.json).
+    // Data from RxSamples/composite_data_model (posts.json, comments.json).
     private const string PostsJson = """
         [{"postId":1,"title":"first title","body":"first body","authorId":1},
          {"postId":2,"title":"second title","body":"second body","authorId":1},

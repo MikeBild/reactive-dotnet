@@ -1,40 +1,40 @@
-// Lektion rxnet-subjects-multicasting: Subjects teilen Werte, Publish teilt Arbeit
+// Lesson rxnet-subjects-multicasting: Subjects share values, Publish shares work
 //
-// Aufgabe: Teile eine simulierte WebSocket-Verbindung zwischen mehreren Subscribern,
-// sodass sie nur einmal öffnet und beim letzten Dispose schließt.
+// Task: Share a simulated WebSocket connection between several subscribers
+// so that it opens only once and closes on the last Dispose.
 //
-// Der Letzte macht das Licht aus. Dazu ein CartStore mit BehaviorSubject.
+// The last one turns off the light. Plus a CartStore with BehaviorSubject.
 
 namespace Exercises.RxNetSubjectsMulticasting;
 
 public static class Socket
 {
-    /// <summary>Cold: Jeder Subscriber öffnet eine eigene Verbindung, Dispose schließt sie.</summary>
+    /// <summary>Cold: Every subscriber opens its own connection, Dispose closes it.</summary>
     public static IObservable<string> Connect(FakeSocketServer server)
     {
         // TODO: Observable.Create: server.Connect(), connection.OnMessage(observer.OnNext),
-        //       als Teardown connection.Close() zurückgeben (Disposable.Create)
+        //       return connection.Close() as the teardown (Disposable.Create)
         throw new NotImplementedException("TODO: Connect");
     }
 
-    /// <summary>Hot: eine geteilte Verbindung für alle Subscriber.</summary>
+    /// <summary>Hot: one shared connection for all subscribers.</summary>
     public static IObservable<string> Shared(FakeSocketServer server)
     {
-        // TODO: Connect mit Publish().RefCount() teilen
+        // TODO: Share Connect with Publish().RefCount()
         throw new NotImplementedException("TODO: Shared");
     }
 }
 
-/// <summary>Der Warenkorb als Zustand mit aktuellem Wert.</summary>
+/// <summary>The cart as state with a current value.</summary>
 public sealed class CartStore
 {
-    // TODO: ein BehaviorSubject<IReadOnlyList<CartItem>> mit leerer Liste als Startwert
+    // TODO: a BehaviorSubject<IReadOnlyList<CartItem>> with an empty list as the initial value
 
-    /// <summary>Nach außen nur die Observable-Seite, nie das Subject selbst.</summary>
+    /// <summary>Expose only the Observable side, never the Subject itself.</summary>
     public IObservable<IReadOnlyList<CartItem>> Items =>
         throw new NotImplementedException("TODO: Items mit AsObservable");
 
-    /// <summary>Der aktuelle Stand, synchron lesbar.</summary>
+    /// <summary>The current state, readable synchronously.</summary>
     public IReadOnlyList<CartItem> Current =>
         throw new NotImplementedException("TODO: Current über Value");
 

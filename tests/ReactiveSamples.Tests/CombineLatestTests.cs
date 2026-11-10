@@ -4,8 +4,8 @@ using ReactiveSamples.CombineLatest;
 namespace ReactiveSamples.Tests;
 
 /// <summary>
-/// Das Original befeuerte zwei Subjects von Hand. Im Test ersetzt CreateHotObservable die Subjects:
-/// gleiche Abfolge, aber deklarativ und mit Zeitstempeln (RxJS: hot('-a--b-') Marble-Syntax).
+/// The original fed two Subjects by hand. In the test, CreateHotObservable replaces the Subjects:
+/// same sequence, but declarative and with timestamps (RxJS: hot('-a--b-') marble syntax).
 /// </summary>
 public class CombineLatestTests : ReactiveTest
 {

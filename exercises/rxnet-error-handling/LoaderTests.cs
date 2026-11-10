@@ -4,7 +4,7 @@ public class LoaderTests : ReactiveTest
 {
     private static readonly long Ms = TimeSpan.TicksPerMillisecond;
 
-    /// <summary>Simulierter Server: zählt Versuche pro URL und antwortet je nach URL.</summary>
+    /// <summary>Simulated server: counts attempts per URL and responds depending on the URL.</summary>
     private sealed class FakeServer(TestScheduler scheduler)
     {
         public Dictionary<string, int> Attempts { get; } = [];
@@ -19,7 +19,7 @@ public class LoaderTests : ReactiveTest
                 "/flaky" when Attempts[url] < 3 => Observable.Throw<Product>(new HttpRequestException("503")),
                 "/flaky" => Observable.Return(new Product("p2", "Zündkerze", 790, 40)),
                 "/broken" => Observable.Throw<Product>(new HttpRequestException("500")),
-                _ => Observable.Never<Product>(), // hängt
+                _ => Observable.Never<Product>(), // hangs
             };
         });
     }
@@ -49,7 +49,7 @@ public class LoaderTests : ReactiveTest
         var (messages, server) = Run("/flaky");
         Assert.Equal(3, server.Attempts["/flaky"]);
         Assert.IsType<Loaded<Product>>(messages[0].Value.Value);
-        Assert.Equal((500 + 1000) * Ms, messages[0].Time, tolerance: 10); // 500 ms und 1 s Pause
+        Assert.Equal((500 + 1000) * Ms, messages[0].Time, tolerance: 10); // 500 ms and 1 s pause
     }
 
     [Fact]
@@ -67,7 +67,7 @@ public class LoaderTests : ReactiveTest
         var (messages, server) = Run("/hang");
         Assert.Equal(3, server.Attempts["/hang"]);
         Assert.IsType<Failed<Product>>(messages[0].Value.Value);
-        // drei Versuche zu je zwei Sekunden plus 500 ms und 1 s Pause
+        // three attempts of two seconds each plus 500 ms and 1 s pause
         Assert.Equal((3 * 2000 + 500 + 1000) * Ms, messages[0].Time, tolerance: 10);
     }
 

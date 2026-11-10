@@ -4,7 +4,7 @@ public class TickerTests : ReactiveTest
 {
     private static readonly TimeSpan Second = TimeSpan.FromSeconds(1);
 
-    /// <summary>TestScheduler, der verrät, ob noch Arbeit geplant ist, also ob ein Timer läuft.</summary>
+    /// <summary>TestScheduler that tells whether work is still scheduled, i.e. whether a timer is running.</summary>
     private sealed class InspectableScheduler : TestScheduler
     {
         public bool HasPendingWork => GetNext() is not null;
@@ -74,6 +74,6 @@ public class TickerTests : ReactiveTest
         scheduler.AdvanceBy(2 * Second.Ticks);
 
         Assert.Equal([0, 1, 2, 3], first);
-        Assert.Equal([0, 1], second); // der zweite Timer startet bei 0
+        Assert.Equal([0, 1], second); // the second timer starts at 0
     }
 }

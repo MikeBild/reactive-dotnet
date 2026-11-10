@@ -2,10 +2,10 @@ namespace Exercises.RxNetPushPull;
 
 public static class Counting
 {
-    /// <summary>Pull: Der Consumer holt jeden Wert mit MoveNext.</summary>
+    /// <summary>Pull: The consumer fetches every value with MoveNext.</summary>
     public static IEnumerable<int> CountTo(int max, Action<int>? onProduce = null)
     {
-        // Der Iterator läuft erst weiter, wenn foreach oder MoveNext den nächsten Wert verlangt.
+        // The iterator only continues when foreach or MoveNext asks for the next value.
         for (var n = 1; n <= max; n++)
         {
             onProduce?.Invoke(n);
@@ -13,11 +13,11 @@ public static class Counting
         }
     }
 
-    /// <summary>Push: Der Producer schickt alle Werte, sobald jemand Subscribe aufruft.</summary>
+    /// <summary>Push: The producer sends all values as soon as someone calls Subscribe.</summary>
     public static IObservable<int> CountToObservable(int max, Action<int>? onProduce = null) =>
         Observable.Create<int>(observer =>
         {
-            // Hier entscheidet der Producer, wann der nächste Wert kommt, der Observer reagiert nur.
+            // Here the producer decides when the next value comes, the Observer only reacts.
             for (var n = 1; n <= max; n++)
             {
                 onProduce?.Invoke(n);

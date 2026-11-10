@@ -2,10 +2,10 @@ namespace Exercises.RxNetUiState;
 
 public static class Reducers
 {
-    /// <summary>Reiner Reducer für den Warenkorb. Gibt immer eine neue Liste zurück.</summary>
+    /// <summary>Pure Reducer for the cart. Always returns a new list.</summary>
     public static IReadOnlyList<CartItem> ReduceCart(IReadOnlyList<CartItem> cart, CartAction action) => action switch
     {
-        // Nur die geänderte Position wird neu erzeugt, alle anderen bleiben dieselben Objekte.
+        // Only the changed line item is created anew, all others stay the same objects.
         AddItem { Item: var item } when cart.Any(entry => entry.ProductId == item.ProductId) =>
             [.. cart.Select(entry => entry.ProductId == item.ProductId
                 ? entry with { Quantity = entry.Quantity + item.Quantity }
@@ -15,7 +15,7 @@ public static class Reducers
         _ => cart,
     };
 
-    /// <summary>Reiner Reducer für die letzten Suchen: neueste vorn, ohne Duplikate, höchstens limit.</summary>
+    /// <summary>Pure Reducer for the recent searches: newest first, no duplicates, at most limit.</summary>
     public static IReadOnlyList<string> PushRecent(IReadOnlyList<string> recent, string term, int limit = 5)
     {
         var trimmed = term.Trim();
@@ -32,17 +32,17 @@ public sealed class CartViewModel
 
     public CartViewModel()
     {
-        // Aktionen rein, Zustand raus. Replay(1).RefCount() entspricht shareReplay mit refCount in RxJS:
-        // Späte Subscriber bekommen sofort den aktuellen Stand.
+        // Actions in, state out. Replay(1).RefCount() matches shareReplay with refCount in RxJS:
+        // Late subscribers get the current state right away.
         Cart = _actions
             .Scan((IReadOnlyList<CartItem>)[], Reducers.ReduceCart)
-            // Achtung: StartWith([]) wäre der params-Aufruf mit null Startwerten.
-            // Die leere Liste muss als ein Wert vom Typ IReadOnlyList übergeben werden.
+            // Careful: StartWith([]) would be the params call with zero initial values.
+            // The empty list must be passed as one value of type IReadOnlyList.
             .StartWith((IReadOnlyList<CartItem>)[])
             .Replay(1)
             .RefCount();
 
-        // Abgeleiteter Zustand statt Flags, die du von Hand synchron halten musst.
+        // Derived state instead of flags that you have to keep in sync by hand.
         TotalCents = Cart
             .Select(Shop.Cart.TotalCents)
             .DistinctUntilChanged();
@@ -64,7 +64,7 @@ public sealed class CartViewModel
     public IObservable<bool> CanPlace { get; }
     public IObservable<IReadOnlyList<string>> RecentSearches { get; }
 
-    // Nach außen nur Methoden, nie die Subjects selbst.
+    // Expose only methods, never the Subjects themselves.
     public void Add(Product product, int quantity = 1) =>
         _actions.OnNext(new AddItem(new CartItem(product.Id, quantity, product.PriceCents)));
 

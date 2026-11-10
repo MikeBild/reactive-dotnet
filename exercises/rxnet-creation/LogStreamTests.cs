@@ -29,7 +29,7 @@ public class LogStreamTests : ReactiveTest
             () => LogStream.Ticks(TimeSpan.FromSeconds(1), scheduler).Take(3),
             created: 0, subscribed: 0, disposed: 10 * Second);
 
-        // Der TestScheduler startet das Interval einen Tick nach dem Subscribe, daher + 1.
+        // The TestScheduler starts the Interval one tick after Subscribe, hence + 1.
         Assert.Equal(
             [OnNext(1 * Second + 1, 0L), OnNext(2 * Second + 1, 1L), OnNext(3 * Second + 1, 2L), OnCompleted<long>(3 * Second + 1)],
             observer.Messages);

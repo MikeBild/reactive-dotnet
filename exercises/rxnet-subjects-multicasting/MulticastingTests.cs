@@ -46,7 +46,7 @@ public class MulticastingTests
         var a = socket.Subscribe(_ => { });
         var b = socket.Subscribe(_ => { });
         a.Dispose();
-        Assert.Equal(1, server.OpenConnections); // b hört noch zu
+        Assert.Equal(1, server.OpenConnections); // b is still listening
 
         b.Dispose();
         Assert.Equal(0, server.OpenConnections);

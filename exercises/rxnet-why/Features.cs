@@ -1,17 +1,17 @@
-// Lektion rxnet-why: Wann lohnt sich reaktive Programmierung?
+// Lesson rxnet-why: When is reactive programming worth it?
 //
-// Aufgabe: Schreib drei Features aus deinem Projekt auf, bei denen Werte über die
-// Zeit eintreffen, und prüf jedes mit der Checkliste aus dem Handout.
+// Task: Write down three features from your project in which values arrive over
+// time, and check each one against the checklist from the handout.
 //
-// Hier gibt es keinen Rx-Code. Die Tests prüfen nur, dass das Projekt baut,
-// System.Reactive läuft und deine Liste vollständig ist.
+// There is no Rx code here. The tests only check that the project builds,
+// System.Reactive runs, and your list is complete.
 
 namespace Exercises.RxNetWhy;
 
 public static class Features
 {
-    // TODO: Trag drei Features ein, zum Beispiel:
-    // new("Produktsuche während der Eingabe", Source.Ui, [Need.Throttle, Need.Cancel],
-    //     "Jeder Tastendruck ist ein neuer Wert, veraltete Requests müssen abbrechen."),
+    // TODO: Add three features, for example:
+    // new("Product search while typing", Source.Ui, [Need.Throttle, Need.Cancel],
+    //     "Every keystroke is a new value, outdated requests must be canceled."),
     public static IReadOnlyList<StreamFeature> All { get; } = [];
 }

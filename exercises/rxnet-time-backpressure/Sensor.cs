@@ -1,32 +1,32 @@
-// Lektion rxnet-time-backpressure: Was tun, wenn mehr Events kommen, als du verarbeitest?
+// Lesson rxnet-time-backpressure: What if more events arrive than you can process?
 //
-// Aufgabe: Zeig aus einem schnellen Sensor-Stream einen gedrosselten Live-Wert mit
-// Sample und einen Durchschnitt pro Zeitfenster mit Buffer an.
+// Task: From a fast sensor stream, show a throttled live value with
+// Sample and an average per time window with Buffer.
 //
-// Ein Observable kennt keinen Rückkanal zum Producer. Du entscheidest, was mit zu
-// vielen Werten passiert: verwerfen (Sample) oder sammeln (Buffer).
+// An Observable has no back channel to the producer. You decide what happens to too
+// many values: drop them (Sample) or collect them (Buffer).
 
 namespace Exercises.RxNetTimeBackpressure;
 
 public static class Sensor
 {
-    /// <summary>Ein Sensor, der perSecond Werte pro Sekunde schickt. Der n-te Wert ist read(n).</summary>
+    /// <summary>A sensor that sends perSecond values per second. The nth value is read(n).</summary>
     public static IObservable<double> Create(int perSecond, IScheduler scheduler, Func<long, double> read) =>
         Observable
             .Interval(TimeSpan.FromTicks(TimeSpan.TicksPerSecond / perSecond), scheduler)
             .Select(read);
 
-    /// <summary>Live-Wert: am Ende jedes Fensters der neueste Wert, alles dazwischen fällt weg.</summary>
+    /// <summary>Live value: the latest value at the end of each window, everything in between is dropped.</summary>
     public static IObservable<double> LiveValue(this IObservable<double> source, TimeSpan period, IScheduler scheduler)
     {
-        // TODO: Sample mit period und scheduler
+        // TODO: Sample with period and scheduler
         throw new NotImplementedException("TODO: LiveValue");
     }
 
-    /// <summary>Durchschnitt pro Fenster. Kein Wert geht verloren, leere Fenster liefern nichts.</summary>
+    /// <summary>Average per window. No value gets lost, empty windows emit nothing.</summary>
     public static IObservable<double> AveragePer(this IObservable<double> source, TimeSpan period, IScheduler scheduler)
     {
-        // TODO: Buffer mit period und scheduler, leere Fenster mit Where weglassen, Average
+        // TODO: Buffer with period and scheduler, drop empty windows with Where, Average
         throw new NotImplementedException("TODO: AveragePer");
     }
 }

@@ -5,7 +5,7 @@ namespace ReactiveSamples.Tests;
 
 public class MessageProcessingTests
 {
-    // Exakt die sieben Eingaben aus dem Gist von 2012.
+    // Exactly the seven inputs from the 2012 gist.
     private static readonly MessagePair[] Inputs =
     [
         new(new OrderMessage("Message1"), new InvoiceMessage("Message1")),
@@ -20,7 +20,7 @@ public class MessageProcessingTests
     [Fact]
     public async Task Characterization_of_the_original_either_rule()
     {
-        // Wichtig: DistinctUntilChanged vergleicht immer mit dem zuletzt EMITTIERTEN Wert.
+        // Important: DistinctUntilChanged always compares with the last EMITTED value.
         var result = await Inputs.ToObservable().DistinctByEitherData().Select(p => p.ToString()).ToArray();
         Assert.Equal(["Message1:Message1", "Message2:Message2", "Message1:Message1", "Message3:Message3"], result);
     }

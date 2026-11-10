@@ -7,7 +7,7 @@ namespace ReactiveSamples.Tests;
 
 public class BackpressureTests : ReactiveTest
 {
-    /// <summary>Schneller Producer: alle 10 Ticks ein Wert, 1..100.</summary>
+    /// <summary>Fast producer: one value every 10 ticks, 1..100.</summary>
     private static ITestableObservable<int> FastProducer(TestScheduler scheduler) =>
         scheduler.CreateHotObservable(
             Enumerable.Range(1, 100).Select(i => OnNext(10 * i + 5, i)).ToArray());
@@ -23,7 +23,7 @@ public class BackpressureTests : ReactiveTest
             created: 0, subscribed: 0, disposed: 2000);
 
         var values = observer.Messages.Select(m => m.Value.Value).ToList();
-        Assert.Equal([9, 19, 29, 39, 49, 59, 69, 79, 89, 99, 100], values); // 11 statt 100 Werte
+        Assert.Equal([9, 19, 29, 39, 49, 59, 69, 79, 89, 99, 100], values); // 11 instead of 100 values
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class BackpressureTests : ReactiveTest
             created: 0, subscribed: 0, disposed: 2000);
 
         var sizes = observer.Messages.Where(m => m.Value.HasValue).Select(m => m.Value.Value.Count).ToList();
-        Assert.Equal(100, sizes.Sum()); // nichts geht verloren
+        Assert.Equal(100, sizes.Sum()); // nothing gets lost
         Assert.All(sizes, size => Assert.InRange(size, 1, 25));
     }
 
@@ -74,9 +74,9 @@ public class BackpressureTests : ReactiveTest
             if (value == 3) break;
         }
 
-        // Ohne Freigabe bliebe der Producer-Thread bei Wert 4 oder 5 für immer in WriteAsync hängen.
-        // Ein synchroner Producer wie Range lässt sich mitten in der Schleife nicht abbrechen –
-        // er läuft zu Ende, die restlichen Werte werden verworfen.
+        // Without the release, the producer thread would stay stuck in WriteAsync at value 4 or 5 forever.
+        // A synchronous producer like Range cannot be canceled in the middle of the loop –
+        // it runs to the end, the remaining values are dropped.
         var deadline = DateTime.UtcNow.AddSeconds(5);
         while (Volatile.Read(ref produced) < 1_000 && DateTime.UtcNow < deadline)
         {

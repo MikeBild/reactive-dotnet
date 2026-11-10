@@ -14,7 +14,7 @@ using ReactiveSamples.ObserverBasics;
 using ReactiveSamples.Saga;
 using ReactiveSamples.SharedResource;
 
-// Aufruf: dotnet run --project samples/ReactiveSamples.Cli -- <beispiel>
+// Usage: dotnet run --project samples/ReactiveSamples.Cli -- <sample>
 var demos = new Dictionary<string, Func<Task>>(StringComparer.OrdinalIgnoreCase)
 {
     ["observer"] = () =>
@@ -94,7 +94,7 @@ var demos = new Dictionary<string, Func<Task>>(StringComparer.OrdinalIgnoreCase)
         bus.Register<Greet>(g => throw new InvalidOperationException($"no greeting for {g.Name}"), predicate: g => g.Name == "Bob");
         bus.Send(new Greet("Alice"));
         bus.Send(new Greet("Bob"));
-        bus.Send(new Greet("Carol")); // der Bus lebt noch
+        bus.Send(new Greet("Carol")); // the bus is still alive
         return Task.CompletedTask;
     },
     ["saga"] = () =>
@@ -111,7 +111,7 @@ var demos = new Dictionary<string, Func<Task>>(StringComparer.OrdinalIgnoreCase)
     {
         static Func<Task<Stream>> Json(string s) => () => Task.FromResult<Stream>(new MemoryStream(Encoding.UTF8.GetBytes(s)));
         var posts = CompositeDataModel.FromJson<PostCreated>(Json("""[{"postId":1,"title":"first","body":"b","authorId":1},{"postId":2,"title":"second","body":"b","authorId":1}]"""));
-        var comments = CompositeDataModel.FromJson<CommentAdded>(() => Task.FromResult<Stream>(File.OpenRead("does-not-exist.json"))); // fehlt → leer
+        var comments = CompositeDataModel.FromJson<CommentAdded>(() => Task.FromResult<Stream>(File.OpenRead("does-not-exist.json"))); // missing → empty
         await CompositeDataModel.Compose(posts, comments).Do(v => Console.WriteLine($"{v.PostId} {v.Title}: {v.CommentCount} comments"));
     },
     ["backpressure"] = async () =>

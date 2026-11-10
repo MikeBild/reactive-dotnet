@@ -27,7 +27,7 @@ public class CoinChangerTests
     [Fact]
     public void Pure_function_can_be_called_twice()
     {
-        // Mit "amount %= n" in der Query lieferte eine zweite Enumeration ein anderes Ergebnis.
+        // With "amount %= n" in the query, a second enumeration returned a different result.
         Assert.Equal(CoinChanger.Change(187), CoinChanger.Change(187));
         Assert.Empty(CoinChanger.Change(0));
     }

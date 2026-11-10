@@ -2,7 +2,7 @@ namespace Exercises.RxNetSubjectsMulticasting;
 
 public static class Socket
 {
-    /// <summary>Cold: Jeder Subscriber öffnet eine eigene Verbindung, Dispose schließt sie.</summary>
+    /// <summary>Cold: Every subscriber opens its own connection, Dispose closes it.</summary>
     public static IObservable<string> Connect(FakeSocketServer server) =>
         Observable.Create<string>(observer =>
         {
@@ -11,25 +11,25 @@ public static class Socket
             return Disposable.Create(connection.Close);
         });
 
-    /// <summary>Hot: eine geteilte Verbindung für alle Subscriber.</summary>
+    /// <summary>Hot: one shared connection for all subscribers.</summary>
     public static IObservable<string> Shared(FakeSocketServer server) =>
-        // Publish verteilt eine Verbindung an alle, RefCount zählt die Subscriber mit:
-        // Der erste öffnet die Verbindung, der letzte Dispose schließt sie wieder.
-        // Wie im Sample SharedResource: Der Letzte macht das Licht aus.
+        // Publish distributes one connection to all, RefCount keeps count of the subscribers:
+        // The first one opens the connection, the last Dispose closes it again.
+        // As in the SharedResource sample: The last one turns off the light.
         Connect(server).Publish().RefCount();
 }
 
-/// <summary>Der Warenkorb als Zustand mit aktuellem Wert.</summary>
+/// <summary>The cart as state with a current value.</summary>
 public sealed class CartStore
 {
-    // BehaviorSubject statt Subject: Es hat einen Startwert und gibt jedem neuen
-    // Subscriber sofort den aktuellen Stand.
+    // BehaviorSubject instead of Subject: It has an initial value and gives every new
+    // subscriber the current state right away.
     private readonly BehaviorSubject<IReadOnlyList<CartItem>> _items = new([]);
 
-    /// <summary>Nach außen nur die Observable-Seite, nie das Subject selbst.</summary>
+    /// <summary>Expose only the Observable side, never the Subject itself.</summary>
     public IObservable<IReadOnlyList<CartItem>> Items => _items.AsObservable();
 
-    /// <summary>Der aktuelle Stand, synchron lesbar.</summary>
+    /// <summary>The current state, readable synchronously.</summary>
     public IReadOnlyList<CartItem> Current => _items.Value;
 
     public void Add(CartItem item) => _items.OnNext([.. _items.Value, item]);

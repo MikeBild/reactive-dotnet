@@ -6,16 +6,16 @@ using System.Reactive.Linq;
 namespace ReactiveSamples.BoundedCollection;
 
 /// <summary>
-/// Modernisierung von Gist "LRUObservableCollection" (2012).
-/// Ehrlicher Name: das Original ist kein LRU-Cache, sondern ein FIFO-Puffer fester Länge
-/// ("die letzten N Einträge", z. B. für ein Log-Fenster in der UI).
-/// Fehler im Original: Insert(0, x) bei vollem Puffer entfernte per RemoveAt(0) genau das
-/// gerade eingefügte Element. Hier wird immer das älteste Element entfernt.
+/// Modernization of gist "LRUObservableCollection" (2012).
+/// Honest name: the original is not an LRU cache but a fixed-length FIFO buffer
+/// ("the last N entries", e.g. for a log window in the UI).
+/// Bug in the original: Insert(0, x) on a full buffer removed, via RemoveAt(0), exactly the
+/// element just inserted. Here, the oldest element is always removed.
 /// </summary>
 public sealed class BoundedObservableCollection<T> : ObservableCollection<T>
 {
     private readonly int _capacity;
-    private readonly List<T> _insertionOrder = []; // ältestes Element vorn
+    private readonly List<T> _insertionOrder = []; // oldest element first
 
     public BoundedObservableCollection(int capacity)
     {
@@ -53,7 +53,7 @@ public sealed class BoundedObservableCollection<T> : ObservableCollection<T>
         base.ClearItems();
     }
 
-    /// <summary>Brücke Event → Observable (RxJS: fromEvent).</summary>
+    /// <summary>Bridge event → Observable (RxJS: fromEvent).</summary>
     public IObservable<NotifyCollectionChangedEventArgs> Changes =>
         Observable
             .FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
@@ -63,8 +63,8 @@ public sealed class BoundedObservableCollection<T> : ObservableCollection<T>
 }
 
 /// <summary>
-/// Dieselbe Idee ohne veränderliche Collection: ein gleitendes Fenster als Operator.
-/// Scan ist das Rx-Pendant zu reduce, das jeden Zwischenstand emittiert (RxJS: scan).
+/// The same idea without a mutable collection: a sliding window as an Operator.
+/// Scan is the Rx counterpart to reduce that emits every intermediate state (RxJS: scan).
 /// </summary>
 public static class SlidingWindowExtensions
 {
@@ -75,7 +75,7 @@ public static class SlidingWindowExtensions
             return next.Count() > capacity ? next.Dequeue() : next;
         });
 
-    /// <summary>Eingebaute Alternative: Buffer(count, skip) liefert überlappende Fenster – aber erst, wenn sie voll sind.</summary>
+    /// <summary>Built-in alternative: Buffer(count, skip) emits overlapping windows – but only once they are full.</summary>
     public static IObservable<IList<T>> FullWindows<T>(this IObservable<T> source, int capacity) =>
         source.Buffer(capacity, 1).Where(window => window.Count == capacity);
 }

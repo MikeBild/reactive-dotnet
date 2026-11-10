@@ -3,17 +3,17 @@ using System.Reactive.Linq;
 namespace ReactiveSamples.ObserverBasics;
 
 /// <summary>
-/// Modernisierung von Rx_Observer_Observables (2010/2011).
-/// Früher: handgeschriebener Producer mit List&lt;IObserver&gt;, dessen Subscribe "this" zurückgab
-/// (ein Dispose entfernte ALLE Observer) und der nie OnCompleted sendete.
-/// Heute: Observable.Create kümmert sich um Abo-Verwaltung, Abmeldung und das Rx-Protokoll
+/// Modernization of Rx_Observer_Observables (2010/2011).
+/// Earlier: a hand-written producer with List&lt;IObserver&gt; whose Subscribe returned "this"
+/// (one Dispose removed ALL Observers) and that never sent OnCompleted.
+/// Today: Observable.Create takes care of subscription management, unsubscribing, and the Rx protocol
 /// (OnNext* (OnError | OnCompleted)?).
 /// </summary>
 public static class NameProducer
 {
     public static readonly IReadOnlyList<string> Names = ["peter", "paul", "maria"];
 
-    /// <summary>Cold Observable: jeder Subscriber bekommt seine eigene Ausführung.</summary>
+    /// <summary>Cold Observable: every subscriber gets its own execution.</summary>
     public static IObservable<string> Cold() =>
         Observable.Create<string>(observer =>
         {
@@ -22,19 +22,19 @@ public static class NameProducer
                 observer.OnNext(name);
             }
             observer.OnCompleted();
-            return () => { }; // nichts aufzuräumen
+            return () => { }; // nothing to clean up
         });
 
     /// <summary>
-    /// Kurzform: für eine feste Sequenz braucht man gar kein Observable.Create.
-    /// Entspricht RxJS <c>from(["peter", "paul", "maria"])</c>.
+    /// Short form: for a fixed sequence, you do not need Observable.Create at all.
+    /// Matches RxJS <c>from(["peter", "paul", "maria"])</c>.
     /// </summary>
     public static IObservable<string> FromList() => Names.ToObservable();
 }
 
 /// <summary>
-/// Ein eigener Observer ist heute selten nötig – Observer.Create oder Subscribe(onNext, onError, onCompleted)
-/// reichen. Hier bleibt er, um die drei Kanäle des Protokolls sichtbar zu machen.
+/// A custom Observer is rarely needed today – Observer.Create or Subscribe(onNext, onError, onCompleted)
+/// are enough. It stays here to make the three channels of the protocol visible.
 /// </summary>
 public sealed class RecordingObserver<T>(string name) : IObserver<T>
 {
@@ -42,6 +42,6 @@ public sealed class RecordingObserver<T>(string name) : IObserver<T>
     public List<string> Log { get; } = [];
 
     public void OnNext(T value) => Log.Add($"{Name}: {value}");
-    public void OnError(Exception error) => Log.Add($"{Name}: error {error.Message}"); // früher: "finished."
+    public void OnError(Exception error) => Log.Add($"{Name}: error {error.Message}"); // earlier: "finished."
     public void OnCompleted() => Log.Add($"{Name}: completed");
 }
