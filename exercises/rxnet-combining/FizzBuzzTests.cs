@@ -3,14 +3,14 @@ namespace Exercises.RxNetCombining;
 public class FizzBuzzTests
 {
     [Fact]
-    public async Task Cycle_wiederholt_die_Werte_endlos()
+    public async Task Cycle_repeats_the_values_endlessly()
     {
         var values = await FizzBuzz.Cycle("a", "b").Take(5).ToArray();
         Assert.Equal(["a", "b", "a", "b", "a"], values);
     }
 
     [Fact]
-    public async Task Die_ersten_fuenfzehn_Werte_stimmen()
+    public async Task The_first_fifteen_values_are_correct()
     {
         var values = await FizzBuzz.Create(15).ToArray();
         Assert.Equal(
@@ -19,7 +19,7 @@ public class FizzBuzzTests
     }
 
     [Fact]
-    public async Task Liefert_hundert_Werte_und_endet()
+    public async Task Emits_one_hundred_values_and_completes()
     {
         var values = await FizzBuzz.Create().ToArray();
         Assert.Equal(100, values.Length);

@@ -24,7 +24,7 @@ public class ProductSearchTests : ReactiveTest
     private const long Ms = TimeSpan.TicksPerMillisecond;
 
     [Fact]
-    public void Interval_liefert_fuenf_Werte_im_Sekundentakt_ohne_echte_Wartezeit()
+    public void Interval_emits_five_values_one_second_apart_without_real_waiting()
     {
         var scheduler = new TestScheduler();
 
@@ -41,7 +41,7 @@ public class ProductSearchTests : ReactiveTest
     }
 
     [Fact(Skip = "TODO: test Throttle")]
-    public void Die_Suche_wartet_300_ms_Ruhe_ab_und_sucht_nur_den_letzten_Begriff()
+    public void The_search_waits_for_300_ms_of_quiet_and_searches_only_the_last_term()
     {
         // TODO: Hot Observable with "B" at 10 ms and "Brems" at 20 ms,
         //       search as a Cold Observable that returns ["Bremsscheibe"] after 1 ms.
@@ -49,20 +49,20 @@ public class ProductSearchTests : ReactiveTest
     }
 
     [Fact(Skip = "TODO: test duplicates")]
-    public void Derselbe_Begriff_zweimal_hintereinander_loest_keine_zweite_Suche_aus()
+    public void The_same_term_twice_in_a_row_does_not_trigger_a_second_search()
     {
         // TODO: "Kerze" at 10 ms and once more at 500 ms, count the searches.
     }
 
     [Fact(Skip = "TODO: test cancellation")]
-    public void Ein_neuer_Begriff_bricht_die_laufende_Suche_ab()
+    public void A_new_term_cancels_the_running_search()
     {
         // TODO: "Brems" with a slow search (500 ms), "Zünd" 400 ms later with a fast search.
         //       Check with slow.Subscriptions that the slow search was unsubscribed.
     }
 
     [Fact(Skip = "TODO: test the error case")]
-    public void Ein_Fehler_der_Suche_wird_zum_Fehlerzustand_und_die_naechste_Suche_laeuft()
+    public void A_search_error_becomes_an_error_state_and_the_next_search_runs()
     {
         // TODO: The search for "kaputt" signals OnError, the one for "Kerze" returns a result.
         //       Expected: first SearchFailed, then SearchOk.

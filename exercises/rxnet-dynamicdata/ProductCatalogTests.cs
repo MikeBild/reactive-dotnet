@@ -11,7 +11,7 @@ public class ProductCatalogTests
     private static IEnumerable<string> Names(ProductCatalog catalog) => catalog.Visible.Select(p => p.Name);
 
     [Fact]
-    public void Visible_ist_nach_Preis_sortiert()
+    public void Visible_is_sorted_by_price()
     {
         using var catalog = new ProductCatalog();
         catalog.Upsert(Disc, Pads, Plug);
@@ -20,7 +20,7 @@ public class ProductCatalogTests
     }
 
     [Fact]
-    public void Der_Suchbegriff_filtert_live_ohne_Gross_und_Kleinschreibung()
+    public void The_search_term_filters_live_case_insensitively()
     {
         using var catalog = new ProductCatalog();
         catalog.Upsert(Disc, Pads, Plug);
@@ -33,7 +33,7 @@ public class ProductCatalogTests
     }
 
     [Fact]
-    public void Neue_und_geaenderte_Produkte_erscheinen_an_der_richtigen_Stelle()
+    public void New_and_changed_products_appear_in_the_right_place()
     {
         using var catalog = new ProductCatalog();
         catalog.Upsert(Disc, Plug);
@@ -46,7 +46,7 @@ public class ProductCatalogTests
     }
 
     [Fact]
-    public void Remove_entfernt_das_Produkt_aus_der_Sicht()
+    public void Remove_takes_the_product_out_of_the_view()
     {
         using var catalog = new ProductCatalog();
         catalog.Upsert(Disc, Pads, Plug);
@@ -57,7 +57,7 @@ public class ProductCatalogTests
     }
 
     [Fact]
-    public void Ein_neues_Produkt_aendert_die_Collection_gezielt_statt_sie_neu_aufzubauen()
+    public void A_new_product_changes_the_collection_precisely_instead_of_rebuilding_it()
     {
         using var catalog = new ProductCatalog();
         catalog.Upsert(Disc, Plug);

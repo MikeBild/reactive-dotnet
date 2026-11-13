@@ -27,11 +27,11 @@ public sealed class CheckoutViewModel : ReactiveObject
 
     public IReadOnlyList<CartItem> Items
     {
-        get => throw new NotImplementedException("TODO: Items lesen");
-        set => throw new NotImplementedException("TODO: Items mit this.RaiseAndSetIfChanged setzen");
+        get => throw new NotImplementedException("TODO: read Items");
+        set => throw new NotImplementedException("TODO: set Items with this.RaiseAndSetIfChanged");
     }
 
-    public int TotalCents => throw new NotImplementedException("TODO: TotalCents aus dem ObservableAsPropertyHelper");
+    public int TotalCents => throw new NotImplementedException("TODO: TotalCents from the ObservableAsPropertyHelper");
 
     public ReactiveCommand<Unit, string> PlaceOrder => throw new NotImplementedException("TODO: PlaceOrder");
 

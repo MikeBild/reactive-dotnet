@@ -35,7 +35,7 @@ dotnet test   # samples and all reference solutions, everything green (CI checks
 3. Fill the gaps until all tests are green.
 4. If you get stuck, compare with `exercises/<lesson>/solution/`.
 
-**Red tests are intended at the start.** The starting points throw `NotImplementedException`, so the start tests fail until you have filled the gaps. A few tests are already green, such as `System_Reactive_ist_installiert_und_laeuft` (System.Reactive is installed and runs). In `rxnet-testing`, the test itself is the task: there the open tests are skipped until you remove `Skip`.
+**Red tests are intended at the start.** The starting points throw `NotImplementedException`, so the start tests fail until you have filled the gaps. A few tests are already green, such as `System_Reactive_is_installed_and_runs`. In `rxnet-testing`, the test itself is the task: there the open tests are skipped until you remove `Skip`.
 
 | Command | What happens |
 | --- | --- |

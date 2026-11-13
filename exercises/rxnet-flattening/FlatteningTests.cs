@@ -7,7 +7,7 @@ public class FlatteningTests : ReactiveTest
     private static IReadOnlyList<Product> Found(string name) => [new Product(name, name, 990, 1)];
 
     [Fact]
-    public void SearchResults_bricht_die_laufende_Suche_ab_wenn_ein_neuer_Begriff_kommt()
+    public void SearchResults_cancels_the_running_search_when_a_new_term_arrives()
     {
         var scheduler = new TestScheduler();
         var terms = scheduler.CreateHotObservable(OnNext(210, "Brems"), OnNext(250, "Zünd"));
@@ -22,7 +22,7 @@ public class FlatteningTests : ReactiveTest
     }
 
     [Fact]
-    public void Autosave_speichert_jede_Aenderung_in_Reihenfolge()
+    public void Autosave_saves_every_change_in_order()
     {
         var scheduler = new TestScheduler();
         var changes = scheduler.CreateHotObservable(OnNext(210, "a"), OnNext(215, "b"), OnNext(220, "c"));
@@ -38,7 +38,7 @@ public class FlatteningTests : ReactiveTest
     }
 
     [Fact]
-    public void UploadQueue_laedt_parallel_aber_hoechstens_maxConcurrent_gleichzeitig()
+    public void UploadQueue_uploads_in_parallel_but_at_most_maxConcurrent_at_once()
     {
         var scheduler = new TestScheduler();
         var files = scheduler.CreateHotObservable(OnNext(210, "1"), OnNext(210, "2"), OnNext(210, "3"));
@@ -57,7 +57,7 @@ public class FlatteningTests : ReactiveTest
     }
 
     [Fact]
-    public void LoginOnClick_ignoriert_Klicks_solange_der_Login_laeuft()
+    public void LoginOnClick_ignores_clicks_while_the_login_is_running()
     {
         var scheduler = new TestScheduler();
         var clicks = scheduler.CreateHotObservable(

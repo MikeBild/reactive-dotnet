@@ -1,14 +1,14 @@
 <Project>
-  <!-- Root-Einstellungen übernehmen: net10.0, Nullable, TreatWarningsAsErrors -->
+  <!-- Inherit the root settings: net10.0, Nullable, TreatWarningsAsErrors -->
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <!--
-    Jede Lektion liegt in exercises/<lektion>/:
-      *.cs              Startpunkt mit TODOs
-      solution/*.cs     Lösung
-      support/*.cs      Hilfsdateien, die du nicht ändern musst
-      *Tests.cs         Tests, dieselben für Startpunkt und Lösung
-    Die Projekte in exercises/ binden diese Dateien nur ein (siehe Directory.Build.targets).
+    Each lesson lives in exercises/<lesson>/:
+      *.cs              starting point with TODOs
+      solution/*.cs     solution
+      support/*.cs      support files you do not need to change
+      *Tests.cs         tests, the same for starting point and solution
+    The projects in exercises/ only include these files (see Directory.Build.targets).
   -->
   <PropertyGroup>
     <ExercisesDir>$(MSBuildThisFileDirectory)</ExercisesDir>

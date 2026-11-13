@@ -14,7 +14,7 @@ public class ProductSearchTests : ReactiveTest
             created: 0, subscribed: 0, disposed: 10_000 * Ms);
 
     [Fact]
-    public void Interval_liefert_fuenf_Werte_im_Sekundentakt_ohne_echte_Wartezeit()
+    public void Interval_emits_five_values_one_second_apart_without_real_waiting()
     {
         var scheduler = new TestScheduler();
 
@@ -31,7 +31,7 @@ public class ProductSearchTests : ReactiveTest
     }
 
     [Fact]
-    public void Die_Suche_wartet_300_ms_Ruhe_ab_und_sucht_nur_den_letzten_Begriff()
+    public void The_search_waits_for_300_ms_of_quiet_and_searches_only_the_last_term()
     {
         var scheduler = new TestScheduler();
         var searched = new List<string>();
@@ -51,7 +51,7 @@ public class ProductSearchTests : ReactiveTest
     }
 
     [Fact]
-    public void Derselbe_Begriff_zweimal_hintereinander_loest_keine_zweite_Suche_aus()
+    public void The_same_term_twice_in_a_row_does_not_trigger_a_second_search()
     {
         var scheduler = new TestScheduler();
         var searches = 0;
@@ -69,7 +69,7 @@ public class ProductSearchTests : ReactiveTest
     }
 
     [Fact]
-    public void Ein_neuer_Begriff_bricht_die_laufende_Suche_ab()
+    public void A_new_term_cancels_the_running_search()
     {
         var scheduler = new TestScheduler();
         var terms = scheduler.CreateHotObservable(OnNext(10 * Ms, "Brems"), OnNext(410 * Ms, "Zünd"));
@@ -86,7 +86,7 @@ public class ProductSearchTests : ReactiveTest
     }
 
     [Fact]
-    public void Ein_Fehler_der_Suche_wird_zum_Fehlerzustand_und_die_naechste_Suche_laeuft()
+    public void A_search_error_becomes_an_error_state_and_the_next_search_runs()
     {
         var scheduler = new TestScheduler();
         var terms = scheduler.CreateHotObservable(OnNext(10 * Ms, "kaputt"), OnNext(500 * Ms, "Kerze"));

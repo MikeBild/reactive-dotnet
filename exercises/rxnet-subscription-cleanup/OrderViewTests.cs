@@ -5,7 +5,7 @@ public class OrderViewTests
     private static readonly long Second = TimeSpan.TicksPerSecond;
 
     [Fact]
-    public void Rendert_Ticks_Autosave_und_Resize()
+    public void Renders_ticks_autosave_and_resize()
     {
         var scheduler = new TestScheduler();
         var window = new AppWindow();
@@ -21,7 +21,7 @@ public class OrderViewTests
     }
 
     [Fact]
-    public void Dispose_beendet_alle_drei_Subscriptions()
+    public void Dispose_ends_all_three_subscriptions()
     {
         var scheduler = new TestScheduler();
         var window = new AppWindow();
@@ -39,7 +39,7 @@ public class OrderViewTests
     }
 
     [Fact]
-    public void Dispose_meldet_den_Event_Handler_ab()
+    public void Dispose_removes_the_event_handler()
     {
         var window = new AppWindow();
         var view = new OrderView(window, new TestScheduler(), _ => { });
@@ -50,7 +50,7 @@ public class OrderViewTests
     }
 
     [Fact]
-    public void Finally_meldet_jedes_Ende()
+    public void Finally_reports_every_end()
     {
         var lines = new List<string>();
         var view = new OrderView(new AppWindow(), new TestScheduler(), lines.Add);

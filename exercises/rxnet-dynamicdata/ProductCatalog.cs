@@ -33,7 +33,7 @@ public sealed class ProductCatalog : IDisposable
 
     public void Remove(string productId) => throw new NotImplementedException("TODO: RemoveKey");
 
-    public void Search(string term) => throw new NotImplementedException("TODO: Suchbegriff mit OnNext");
+    public void Search(string term) => throw new NotImplementedException("TODO: search term with OnNext");
 
     public void Dispose()
     {

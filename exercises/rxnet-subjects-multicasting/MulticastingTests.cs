@@ -6,7 +6,7 @@ public class MulticastingTests
     private static readonly CartItem Plug = new("p2", 4, 790);
 
     [Fact]
-    public void Connect_oeffnet_pro_Subscriber_eine_eigene_Verbindung()
+    public void Connect_opens_a_separate_connection_per_subscriber()
     {
         var server = new FakeSocketServer();
         var socket = Socket.Connect(server);
@@ -21,7 +21,7 @@ public class MulticastingTests
     }
 
     [Fact]
-    public void Shared_oeffnet_genau_eine_Verbindung_fuer_alle()
+    public void Shared_opens_exactly_one_connection_for_all()
     {
         var server = new FakeSocketServer();
         var socket = Socket.Shared(server);
@@ -38,7 +38,7 @@ public class MulticastingTests
     }
 
     [Fact]
-    public void Shared_der_Letzte_macht_das_Licht_aus()
+    public void Shared_the_last_one_turns_off_the_lights()
     {
         var server = new FakeSocketServer();
         var socket = Socket.Shared(server);
@@ -54,7 +54,7 @@ public class MulticastingTests
     }
 
     [Fact]
-    public void Shared_oeffnet_nach_dem_letzten_Dispose_beim_naechsten_Subscribe_neu()
+    public void Shared_reopens_on_the_next_Subscribe_after_the_last_Dispose()
     {
         var server = new FakeSocketServer();
         var socket = Socket.Shared(server);
@@ -67,7 +67,7 @@ public class MulticastingTests
     }
 
     [Fact]
-    public void CartStore_gibt_neuen_Subscribern_sofort_den_aktuellen_Stand()
+    public void CartStore_gives_new_subscribers_the_current_state_immediately()
     {
         var store = new CartStore();
         store.Add(Brake);
@@ -83,6 +83,6 @@ public class MulticastingTests
     }
 
     [Fact]
-    public void CartStore_gibt_das_Subject_nicht_heraus() =>
+    public void CartStore_does_not_expose_the_Subject() =>
         Assert.IsNotType<BehaviorSubject<IReadOnlyList<CartItem>>>(new CartStore().Items);
 }

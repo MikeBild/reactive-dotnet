@@ -3,7 +3,7 @@ namespace Exercises.RxNetPushPull;
 public class CountingTests
 {
     [Fact]
-    public void Pull_der_Iterator_rechnet_erst_wenn_der_Consumer_MoveNext_aufruft()
+    public void Pull_the_iterator_computes_only_when_the_consumer_calls_MoveNext()
     {
         var produced = new List<int>();
         using var numbers = Counting.CountTo(10, produced.Add).GetEnumerator();
@@ -17,11 +17,11 @@ public class CountingTests
     }
 
     [Fact]
-    public void Pull_der_Iterator_liefert_eins_bis_zehn() =>
+    public void Pull_the_iterator_yields_one_to_ten() =>
         Assert.Equal(Enumerable.Range(1, 10), Counting.CountTo(10));
 
     [Fact]
-    public void Push_ohne_Subscribe_entsteht_kein_Wert()
+    public void Push_without_Subscribe_no_value_is_produced()
     {
         var produced = new List<int>();
         Counting.CountToObservable(10, produced.Add);
@@ -29,7 +29,7 @@ public class CountingTests
     }
 
     [Fact]
-    public void Push_nach_Subscribe_schickt_der_Producer_alle_Werte_und_OnCompleted()
+    public void Push_after_Subscribe_the_producer_sends_all_values_and_OnCompleted()
     {
         var received = new List<int>();
         var completed = false;
@@ -42,14 +42,14 @@ public class CountingTests
     }
 
     [Fact]
-    public void Push_der_Producer_bestimmt_das_Tempo_nicht_der_Consumer()
+    public void Push_the_producer_sets_the_pace_not_the_consumer()
     {
         var order = new List<string>();
-        using var subscription = Counting.CountToObservable(3, n => order.Add($"produziert {n}"))
-            .Subscribe(n => order.Add($"empfangen {n}"));
+        using var subscription = Counting.CountToObservable(3, n => order.Add($"produced {n}"))
+            .Subscribe(n => order.Add($"received {n}"));
 
         Assert.Equal(
-            ["produziert 1", "empfangen 1", "produziert 2", "empfangen 2", "produziert 3", "empfangen 3"],
+            ["produced 1", "received 1", "produced 2", "received 2", "produced 3", "received 3"],
             order);
     }
 }

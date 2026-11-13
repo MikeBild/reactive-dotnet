@@ -11,7 +11,7 @@ public class TickerTests : ReactiveTest
     }
 
     [Fact]
-    public void Ohne_Subscribe_startet_kein_Timer()
+    public void Without_Subscribe_no_timer_starts()
     {
         var scheduler = new InspectableScheduler();
         Ticker.Create(Second, scheduler);
@@ -19,7 +19,7 @@ public class TickerTests : ReactiveTest
     }
 
     [Fact]
-    public void Liefert_fuenf_Werte_im_Takt_und_meldet_dann_OnCompleted()
+    public void Emits_five_values_on_schedule_and_then_signals_OnCompleted()
     {
         var scheduler = new InspectableScheduler();
         var values = new List<int>();
@@ -36,7 +36,7 @@ public class TickerTests : ReactiveTest
     }
 
     [Fact]
-    public void Nach_OnCompleted_laeuft_kein_Timer_mehr()
+    public void After_OnCompleted_no_timer_is_running()
     {
         var scheduler = new InspectableScheduler();
         using var subscription = Ticker.Create(Second, scheduler).Subscribe(_ => { });
@@ -46,7 +46,7 @@ public class TickerTests : ReactiveTest
     }
 
     [Fact]
-    public void Dispose_stoppt_den_Timer()
+    public void Dispose_stops_the_timer()
     {
         var scheduler = new InspectableScheduler();
         var values = new List<int>();
@@ -61,7 +61,7 @@ public class TickerTests : ReactiveTest
     }
 
     [Fact]
-    public void Jeder_Subscriber_bekommt_einen_eigenen_Timer()
+    public void Every_subscriber_gets_its_own_timer()
     {
         var scheduler = new InspectableScheduler();
         var ticks = Ticker.Create(Second, scheduler);

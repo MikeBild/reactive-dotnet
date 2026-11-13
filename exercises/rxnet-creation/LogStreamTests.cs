@@ -5,7 +5,7 @@ public class LogStreamTests : ReactiveTest
     private static readonly long Second = TimeSpan.TicksPerSecond;
 
     [Fact]
-    public void Clicks_liefert_jeden_Klick_und_Dispose_meldet_den_Handler_ab()
+    public void Clicks_emits_every_click_and_Dispose_removes_the_handler()
     {
         var button = new Button();
         var clicks = new List<string>();
@@ -22,7 +22,7 @@ public class LogStreamTests : ReactiveTest
     }
 
     [Fact]
-    public void Ticks_zaehlt_im_Takt_hoch()
+    public void Ticks_counts_up_on_schedule()
     {
         var scheduler = new TestScheduler();
         var observer = scheduler.Start(
@@ -36,7 +36,7 @@ public class LogStreamTests : ReactiveTest
     }
 
     [Fact]
-    public void LoadCustomer_laedt_erst_beim_Subscribe_fuer_jeden_Subscriber_neu()
+    public void LoadCustomer_loads_only_on_Subscribe_and_anew_for_every_subscriber()
     {
         var scheduler = new TestScheduler();
         var calls = 0;
@@ -54,7 +54,7 @@ public class LogStreamTests : ReactiveTest
     }
 
     [Fact]
-    public void WithPrefix_setzt_den_Praefix_vor_jeden_Wert()
+    public void WithPrefix_puts_the_prefix_before_every_value()
     {
         var lines = new List<string>();
         using var subscription = Observable.Range(1, 2).WithPrefix("tick").Subscribe(lines.Add);
@@ -62,7 +62,7 @@ public class LogStreamTests : ReactiveTest
     }
 
     [Fact]
-    public void Create_fuehrt_Klicks_Ticks_und_Kunden_in_einem_Stream_zusammen()
+    public void Create_merges_clicks_ticks_and_customers_into_one_stream()
     {
         var scheduler = new TestScheduler();
         var button = new Button();

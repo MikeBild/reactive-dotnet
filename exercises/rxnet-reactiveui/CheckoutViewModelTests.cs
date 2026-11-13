@@ -8,7 +8,7 @@ public class CheckoutViewModelTests
     private static readonly Product Plug = new("p2", "Zündkerze", 790, 40);
 
     [Fact]
-    public void TotalCents_folgt_den_Positionen()
+    public void TotalCents_follows_the_items()
     {
         var scheduler = new TestScheduler();
         var vm = new CheckoutViewModel(_ => Observable.Return("o1"), scheduler);
@@ -21,7 +21,7 @@ public class CheckoutViewModelTests
     }
 
     [Fact]
-    public void TotalCents_meldet_PropertyChanged()
+    public void TotalCents_raises_PropertyChanged()
     {
         var scheduler = new TestScheduler();
         var vm = new CheckoutViewModel(_ => Observable.Return("o1"), scheduler);
@@ -37,7 +37,7 @@ public class CheckoutViewModelTests
     }
 
     [Fact]
-    public void PlaceOrder_ist_bei_leerem_Warenkorb_nicht_ausfuehrbar()
+    public void PlaceOrder_cannot_execute_with_an_empty_cart()
     {
         var scheduler = new TestScheduler();
         var vm = new CheckoutViewModel(_ => Observable.Return("o1"), scheduler);
@@ -52,7 +52,7 @@ public class CheckoutViewModelTests
     }
 
     [Fact]
-    public void PlaceOrder_schickt_die_Positionen_und_liefert_die_Bestellnummer()
+    public void PlaceOrder_sends_the_items_and_returns_the_order_id()
     {
         var scheduler = new TestScheduler();
         IReadOnlyList<CartItem>? sent = null;
@@ -74,7 +74,7 @@ public class CheckoutViewModelTests
     }
 
     [Fact]
-    public void Fehler_beim_Bestellen_landen_in_ThrownExceptions()
+    public void Errors_while_placing_the_order_end_up_in_ThrownExceptions()
     {
         var scheduler = new TestScheduler();
         var vm = new CheckoutViewModel(_ => Observable.Throw<string>(new InvalidOperationException("Bestand reicht nicht")), scheduler);

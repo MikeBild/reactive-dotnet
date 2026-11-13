@@ -32,12 +32,12 @@ public sealed class CartStore
 
     /// <summary>Expose only the Observable side, never the Subject itself.</summary>
     public IObservable<IReadOnlyList<CartItem>> Items =>
-        throw new NotImplementedException("TODO: Items mit AsObservable");
+        throw new NotImplementedException("TODO: Items with AsObservable");
 
     /// <summary>The current state, readable synchronously.</summary>
     public IReadOnlyList<CartItem> Current =>
-        throw new NotImplementedException("TODO: Current über Value");
+        throw new NotImplementedException("TODO: Current via Value");
 
     public void Add(CartItem item) =>
-        throw new NotImplementedException("TODO: Add mit OnNext und einer neuen Liste");
+        throw new NotImplementedException("TODO: Add with OnNext and a new list");
 }

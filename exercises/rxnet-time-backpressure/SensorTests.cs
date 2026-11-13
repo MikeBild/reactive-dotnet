@@ -5,7 +5,7 @@ public class SensorTests : ReactiveTest
     private static readonly TimeSpan Second = TimeSpan.FromSeconds(1);
 
     [Fact]
-    public void Der_Sensor_schickt_tausend_Werte_pro_Sekunde()
+    public void The_sensor_sends_one_thousand_values_per_second()
     {
         var scheduler = new TestScheduler();
         var count = 0;
@@ -17,7 +17,7 @@ public class SensorTests : ReactiveTest
     }
 
     [Fact]
-    public void LiveValue_liefert_pro_Sekunde_nur_den_neuesten_Wert()
+    public void LiveValue_emits_only_the_latest_value_per_second()
     {
         var scheduler = new TestScheduler();
         var values = new List<double>();
@@ -28,12 +28,12 @@ public class SensorTests : ReactiveTest
         scheduler.AdvanceBy(3 * Second.Ticks);
 
         Assert.Equal(3, values.Count); // instead of three thousand values
-        Assert.True(values[0] >= 990, $"Erwartet war ein Wert vom Ende des Fensters, nicht {values[0]}. Sample liefert pro Fenster den neuesten Wert.");
+        Assert.True(values[0] >= 990, $"Expected a value from the end of the window, not {values[0]}. Sample emits the latest value per window.");
         Assert.True(values[1] > values[0] && values[2] > values[1]);
     }
 
     [Fact]
-    public void AveragePer_verwirft_nichts_und_liefert_den_Durchschnitt_pro_Fenster()
+    public void AveragePer_drops_nothing_and_emits_the_average_per_window()
     {
         var scheduler = new TestScheduler();
         var source = scheduler.CreateHotObservable(
@@ -49,7 +49,7 @@ public class SensorTests : ReactiveTest
     }
 
     [Fact]
-    public void AveragePer_laesst_leere_Fenster_weg()
+    public void AveragePer_skips_empty_windows()
     {
         var scheduler = new TestScheduler();
         var source = scheduler.CreateHotObservable(OnNext(3 * Second.Ticks + 1, 5.0));

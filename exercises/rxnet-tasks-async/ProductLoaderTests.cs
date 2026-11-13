@@ -5,7 +5,7 @@ public class ProductLoaderTests
     private static readonly Product Brake = new("p1", "Bremsscheibe", 4_990, 12);
 
     [Fact]
-    public void Ohne_Subscribe_startet_kein_Request()
+    public void Without_Subscribe_no_request_starts()
     {
         var calls = 0;
         ProductLoader.Load(_ => { calls++; return Task.FromResult(Brake); });
@@ -13,14 +13,14 @@ public class ProductLoaderTests
     }
 
     [Fact]
-    public async Task Await_holt_das_Ergebnis_zurueck()
+    public async Task Await_returns_the_result()
     {
         var product = await ProductLoader.Load(_ => Task.FromResult(Brake)).FirstAsync();
         Assert.Equal(Brake, product);
     }
 
     [Fact]
-    public void Dispose_bricht_den_Request_ab()
+    public void Dispose_cancels_the_request()
     {
         var cancelled = false;
         var pending = new TaskCompletionSource<Product>();
@@ -38,7 +38,7 @@ public class ProductLoaderTests
     }
 
     [Fact]
-    public void Timeout_meldet_einen_Fehler_und_bricht_den_Request_ab()
+    public void Timeout_signals_an_error_and_cancels_the_request()
     {
         var scheduler = new TestScheduler();
         var cancelled = false;
@@ -63,7 +63,7 @@ public class ProductLoaderTests
     }
 
     [Fact]
-    public async Task FirstThreeAsync_liefert_die_ersten_drei_Werte_und_meldet_sich_ab()
+    public async Task FirstThreeAsync_returns_the_first_three_values_and_unsubscribes()
     {
         var disposed = false;
         var prices = Observable.Range(100, 10).Finally(() => disposed = true);

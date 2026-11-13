@@ -13,7 +13,7 @@ public class CustomerStreamTests
     }
 
     [Fact]
-    public void Ohne_Subscribe_laeuft_kein_Request()
+    public void Without_Subscribe_no_request_runs()
     {
         var counter = new Counter();
         CustomerStream.Cold(counter.Load, counter.OnRequest, new TestScheduler());
@@ -21,7 +21,7 @@ public class CustomerStreamTests
     }
 
     [Fact]
-    public void Cold_zwei_Subscriber_starten_zwei_Requests()
+    public void Cold_two_subscribers_start_two_requests()
     {
         var scheduler = new TestScheduler();
         var counter = new Counter();
@@ -40,7 +40,7 @@ public class CustomerStreamTests
     }
 
     [Fact]
-    public void Shared_zwei_gleichzeitige_Subscriber_teilen_einen_Request()
+    public void Shared_two_concurrent_subscribers_share_one_request()
     {
         var scheduler = new TestScheduler();
         var counter = new Counter();
@@ -59,7 +59,7 @@ public class CustomerStreamTests
     }
 
     [Fact]
-    public void Shared_nach_dem_Ende_bekommt_ein_spaeter_Subscriber_nur_OnCompleted()
+    public void Shared_after_completion_a_late_subscriber_only_gets_OnCompleted()
     {
         // Unlike share() in RxJS, Publish().RefCount() does not restart after OnCompleted:
         // The Subject behind Publish has completed, late subscribers only get OnCompleted.

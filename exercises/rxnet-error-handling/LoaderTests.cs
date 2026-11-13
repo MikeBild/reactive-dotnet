@@ -35,7 +35,7 @@ public class LoaderTests : ReactiveTest
     }
 
     [Fact]
-    public void Erfolg_wird_zum_Loaded_Wert()
+    public void Success_becomes_a_Loaded_value()
     {
         var (messages, _) = Run("/ok");
         var loaded = Assert.IsType<Loaded<Product>>(messages[0].Value.Value);
@@ -44,7 +44,7 @@ public class LoaderTests : ReactiveTest
     }
 
     [Fact]
-    public void Wiederholt_zweimal_mit_Backoff_und_hat_dann_Erfolg()
+    public void Retries_twice_with_backoff_and_then_succeeds()
     {
         var (messages, server) = Run("/flaky");
         Assert.Equal(3, server.Attempts["/flaky"]);
@@ -53,7 +53,7 @@ public class LoaderTests : ReactiveTest
     }
 
     [Fact]
-    public void Nach_zwei_Wiederholungen_wird_der_Fehler_zum_Failed_Wert()
+    public void After_two_retries_the_error_becomes_a_Failed_value()
     {
         var (messages, server) = Run("/broken");
         Assert.Equal(3, server.Attempts["/broken"]);
@@ -62,7 +62,7 @@ public class LoaderTests : ReactiveTest
     }
 
     [Fact]
-    public void Ein_haengender_Request_bekommt_je_Versuch_ein_Timeout()
+    public void A_hanging_request_gets_a_timeout_per_attempt()
     {
         var (messages, server) = Run("/hang");
         Assert.Equal(3, server.Attempts["/hang"]);
@@ -72,7 +72,7 @@ public class LoaderTests : ReactiveTest
     }
 
     [Fact]
-    public void Ein_Fehler_beendet_die_anderen_Requests_nicht()
+    public void An_error_does_not_end_the_other_requests()
     {
         var (messages, _) = Run("/broken", "/ok", "/flaky");
         var results = messages.Where(m => m.Value.HasValue).Select(m => m.Value.Value).ToList();

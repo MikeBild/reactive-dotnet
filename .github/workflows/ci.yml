@@ -13,10 +13,10 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
-      - name: Samples, Lösungen und Startpunkte bauen
+      - name: Build samples, solutions and starting points
         run: |
           dotnet build ReactiveDotnet.slnx
           dotnet build exercises/Exercises.Start.Tests
           dotnet build exercises/Extras.Start.Tests
-      - name: Samples und Lösungen testen
+      - name: Test samples and solutions
         run: dotnet test ReactiveDotnet.slnx --no-build

@@ -1,20 +1,20 @@
 <Project>
   <!--
-    Jedes Projekt setzt drei Eigenschaften:
-      ExerciseSet:     Core (Kern-Lektionen) oder Extras (ReactiveUI und DynamicData)
-      ExerciseVariant: Start (Startpunkt, den du füllst) oder Solution (Lösung)
-      ExerciseKind:    Library oder Tests
+    Each project sets three properties:
+      ExerciseSet:     Core (core lessons) or Extras (ReactiveUI and DynamicData)
+      ExerciseVariant: Start (starting point you fill in) or Solution
+      ExerciseKind:    Library or Tests
   -->
   <PropertyGroup>
     <_ExtrasGlob>$(ExercisesDir)rxnet-reactiveui/**;$(ExercisesDir)rxnet-dynamicdata/**</_ExtrasGlob>
   </PropertyGroup>
 
-  <!-- Werkstatt-Shop und Hilfsdateien gehören zu jeder Bibliothek -->
+  <!-- The workshop shop and support files belong to every library -->
   <ItemGroup Condition="'$(ExerciseKind)' == 'Library'">
     <Compile Include="$(ExercisesDir)Shop/*.cs" />
   </ItemGroup>
 
-  <!-- Kern-Lektionen -->
+  <!-- Core lessons -->
   <ItemGroup Condition="'$(ExerciseSet)' == 'Core' And '$(ExerciseKind)' == 'Library'">
     <Compile Include="$(ExercisesDir)rxnet-*/support/*.cs" Exclude="$(_ExtrasGlob)" />
     <Compile Include="$(ExercisesDir)rxnet-*/*.cs" Exclude="$(_ExtrasGlob);$(ExercisesDir)rxnet-*/*Tests.cs" Condition="'$(ExerciseVariant)' == 'Start'" />
@@ -22,12 +22,12 @@
   </ItemGroup>
   <ItemGroup Condition="'$(ExerciseSet)' == 'Core' And '$(ExerciseKind)' == 'Tests'">
     <Compile Include="$(ExercisesDir)rxnet-*/*Tests.cs" Exclude="$(_ExtrasGlob)" Condition="'$(ExerciseVariant)' == 'Start'" />
-    <!-- In rxnet-testing sind die Tests selbst die Aufgabe: die Lösung ersetzt die Startdatei -->
+    <!-- In rxnet-testing the tests themselves are the task: the solution replaces the starting file -->
     <Compile Include="$(ExercisesDir)rxnet-*/*Tests.cs" Exclude="$(_ExtrasGlob);$(ExercisesDir)rxnet-testing/*Tests.cs" Condition="'$(ExerciseVariant)' == 'Solution'" />
     <Compile Include="$(ExercisesDir)rxnet-*/solution/*Tests.cs" Exclude="$(_ExtrasGlob)" Condition="'$(ExerciseVariant)' == 'Solution'" />
   </ItemGroup>
 
-  <!-- Zusatz-Lektionen ReactiveUI und DynamicData -->
+  <!-- Extra lessons ReactiveUI and DynamicData -->
   <ItemGroup Condition="'$(ExerciseSet)' == 'Extras' And '$(ExerciseKind)' == 'Library'">
     <Compile Include="$(ExercisesDir)rxnet-reactiveui/support/*.cs;$(ExercisesDir)rxnet-dynamicdata/support/*.cs" />
     <Compile Include="$(ExercisesDir)rxnet-reactiveui/*.cs;$(ExercisesDir)rxnet-dynamicdata/*.cs" Exclude="$(ExercisesDir)rxnet-*/*Tests.cs" Condition="'$(ExerciseVariant)' == 'Start'" />
@@ -37,7 +37,7 @@
     <Compile Include="$(ExercisesDir)rxnet-reactiveui/*Tests.cs;$(ExercisesDir)rxnet-dynamicdata/*Tests.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(ExerciseSet)' == 'Extras'">
-    <!-- Nur die Zusatz-Lektionen brauchen diese Pakete, Begründung im README -->
+    <!-- Only the extra lessons need these packages, the reasoning is in the README -->
     <PackageReference Include="ReactiveUI.Reactive" Version="26.0.1" />
     <PackageReference Include="DynamicData" Version="9.5.0" />
   </ItemGroup>

@@ -14,7 +14,7 @@ public class MessageOperatorsTests
     }
 
     [Fact]
-    public void OfMessageType_laesst_nur_den_gewuenschten_Typ_durch_und_liefert_den_Payload()
+    public void OfMessageType_lets_only_the_requested_type_through_and_yields_the_payload()
     {
         var statuses = Collect(new[] { Placed, Chat, Paid }.ToObservable().OfMessageType<OrderStatusChanged>("order-status"));
 
@@ -22,7 +22,7 @@ public class MessageOperatorsTests
     }
 
     [Fact]
-    public void OfMessageType_laesst_direkt_wiederholte_Ids_weg()
+    public void OfMessageType_drops_directly_repeated_ids()
     {
         var statuses = Collect(new[] { Placed, Placed, Paid, Paid, Placed }.ToObservable()
             .OfMessageType<OrderStatusChanged>("order-status"));
@@ -31,7 +31,7 @@ public class MessageOperatorsTests
     }
 
     [Fact]
-    public void CountOfType_liefert_nach_jeder_Nachricht_den_Zwischenstand()
+    public void CountOfType_emits_the_running_count_after_every_message()
     {
         var messages = new Subject<Message>();
         var counts = new List<int>();

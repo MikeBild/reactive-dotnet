@@ -13,7 +13,7 @@ public class CartViewModelTests
     }
 
     [Fact]
-    public void ReduceCart_fuegt_hinzu_erhoeht_die_Menge_und_entfernt()
+    public void ReduceCart_adds_increases_the_quantity_and_removes()
     {
         IReadOnlyList<CartItem> cart = [];
         cart = Reducers.ReduceCart(cart, new AddItem(new CartItem("p1", 1, 4_990)));
@@ -26,7 +26,7 @@ public class CartViewModelTests
     }
 
     [Fact]
-    public void ReduceCart_aendert_die_alte_Liste_nicht()
+    public void ReduceCart_does_not_change_the_old_list()
     {
         IReadOnlyList<CartItem> before = [new CartItem("p1", 1, 4_990)];
         var after = Reducers.ReduceCart(before, new AddItem(new CartItem("p2", 1, 790)));
@@ -35,7 +35,7 @@ public class CartViewModelTests
     }
 
     [Fact]
-    public void PushRecent_haelt_die_letzten_fuenf_ohne_Duplikate_die_neueste_vorn()
+    public void PushRecent_keeps_the_last_five_without_duplicates_newest_first()
     {
         IReadOnlyList<string> recent = [];
         foreach (var term in new[] { "a", "b", "c", "b", "d", "e", "f", "  " })
@@ -45,7 +45,7 @@ public class CartViewModelTests
     }
 
     [Fact]
-    public void TotalCents_und_CanPlace_folgen_den_Aktionen()
+    public void TotalCents_and_CanPlace_follow_the_actions()
     {
         var subscriptions = new List<IDisposable>();
         var vm = new CartViewModel();
@@ -65,7 +65,7 @@ public class CartViewModelTests
     }
 
     [Fact]
-    public void Spaete_Subscriber_bekommen_sofort_den_aktuellen_Warenkorb()
+    public void Late_subscribers_get_the_current_cart_immediately()
     {
         var vm = new CartViewModel();
         using var first = vm.Cart.Subscribe(_ => { });
@@ -78,7 +78,7 @@ public class CartViewModelTests
     }
 
     [Fact]
-    public void RecentSearches_liefert_die_LRU_Liste()
+    public void RecentSearches_emits_the_LRU_list()
     {
         var subscriptions = new List<IDisposable>();
         var vm = new CartViewModel();
